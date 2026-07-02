@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rede de Pesquisa</title>
+<title>Rede de Pesquisa · LIPAN LEFA CELBE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -30,11 +30,11 @@
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:#d3dede;border-radius:20px;border:2px solid var(--white)}
 
-  .app{display:flex;flex-direction:column;height:100vh}
+  .app{display:flex;flex-direction:column;height:100vh;height:100dvh}
 
   /* Topbar */
   .topbar{
-    display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid var(--line);
     background:var(--white);z-index:20;flex-wrap:wrap;
   }
   .brand{display:flex;align-items:center;gap:12px;min-width:0}
@@ -49,8 +49,9 @@
   .topbar .spacer{flex:1}
   .search{
     display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);
-    border-radius:11px;padding:8px 12px;min-width:210px;max-width:320px;flex:1 1 210px;
+    border-radius:11px;padding:8px 12px;min-width:180px;max-width:300px;flex:1 1 180px;
   }
+  body:not([data-view="rede"]) .search{display:none}
   .search input{border:0;background:transparent;outline:0;font-size:13.5px;width:100%;color:var(--ink)}
   .search svg{width:16px;height:16px;color:var(--ink-3);flex:0 0 auto}
   .btn{
@@ -64,6 +65,36 @@
   .btn.primary:hover{background:var(--petrol-d)}
   .btn.ghost{border-color:transparent;background:transparent;padding:9px 10px}
   .btn.ghost:hover{background:var(--panel)}
+  .btn.danger{border-color:#f2cfca;color:var(--red)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  /* Tabs */
+  .tabs{display:flex;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:3px}
+  .tab{
+    border:0;background:transparent;border-radius:9px;padding:7px 14px;font-size:13px;font-weight:600;
+    color:var(--ink-2);display:inline-flex;align-items:center;gap:7px;position:relative;transition:.15s;
+  }
+  .tab svg{width:15px;height:15px}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--white);color:var(--ink);box-shadow:var(--shadow)}
+  .tab .badge{
+    position:absolute;top:2px;right:4px;min-width:16px;height:16px;border-radius:9px;background:var(--coral);
+    color:#fff;font-family:'Space Grotesk';font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px;
+  }
+
+  /* Identity chip */
+  .id-chip{
+    display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:11px;
+    padding:6px 11px 6px 6px;font-size:12.5px;font-weight:600;background:var(--white);color:var(--ink);transition:.15s;
+  }
+  .id-chip:hover{border-color:#cdd8d8;background:var(--panel)}
+  .id-chip .av{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:700;background:var(--ink-3);overflow:hidden;flex:0 0 auto}
+  .id-chip .av img{width:100%;height:100%;object-fit:cover}
+  .id-chip.admin{border-color:var(--petrol);box-shadow:0 0 0 1px var(--petrol) inset}
+
+  /* Views */
+  .view{flex:1;min-height:0;display:none;flex-direction:column}
+  .view.on{display:flex}
 
   /* Stats strip */
   .stats{display:flex;gap:10px;padding:12px 22px;border-bottom:1px solid var(--line);background:var(--white);overflow-x:auto;align-items:stretch}
@@ -76,10 +107,10 @@
   .stat .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;line-height:1;color:var(--ink)}
   .stat .l{font-size:11px;color:var(--ink-2);font-weight:500}
   .stat .dot{position:absolute;top:11px;right:12px;width:9px;height:9px;border-radius:50%}
-  .stat.alert{min-width:auto;margin-left:auto;border-color:#f0dcae;background:#fdf8ee;cursor:default}
+  .stat.alert{min-width:auto;margin-left:auto;border-color:#f0dcae;background:#fdf8ee}
   .stat.alert .l{color:var(--amber)}
 
-  /* Layout */
+  /* Layout rede */
   .main{flex:1;display:flex;min-height:0;position:relative}
   .side{
     width:250px;flex:0 0 250px;border-right:1px solid var(--line);background:var(--white);
@@ -95,6 +126,11 @@
   .legend-item .sw{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
   .legend-item .c{margin-left:auto;font-family:'Space Grotesk';font-size:12px;color:var(--ink-3);font-weight:600}
   .legend-item.off{opacity:.38}
+  .legend-item .solo{
+    display:none;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--petrol);
+    border:1px solid var(--petrol)44;border-radius:6px;padding:1px 6px;margin-left:4px;
+  }
+  .legend-item:hover .solo{display:inline-block}
   .filter-item .sw{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
   .filter-item.off{opacity:.35}
   .filter-item .c{margin-left:auto;font-family:'Space Grotesk';font-size:11px;color:var(--ink-3);font-weight:600}
@@ -180,6 +216,124 @@
   .nb .via{margin-left:auto;font-size:10.5px;color:var(--ink-3)}
   .dactions{display:flex;gap:8px;padding:16px 22px}
 
+  /* ===== Cronograma ===== */
+  .crono-scroll{flex:1;overflow-y:auto}
+  .crono-wrap{max-width:880px;margin:0 auto;padding:26px 22px 60px}
+  .view-head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  .view-head h2{font-family:'Fraunces';font-weight:600;font-size:26px;margin:0;letter-spacing:-.01em}
+  .view-head .sub{font-size:13px;color:var(--ink-3);margin-top:4px}
+  .view-head .spacer{flex:1}
+  .crono-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .crono-group{margin-bottom:26px}
+  .crono-group h4{
+    font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);font-weight:700;
+    margin:0 0 10px;display:flex;align-items:center;gap:8px;
+  }
+  .crono-group h4 .n{font-family:'Space Grotesk';color:var(--ink-2)}
+  .crono-group h4::after{content:'';flex:1;height:1px;background:var(--line-2)}
+  .ev{
+    display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--line);border-radius:13px;
+    margin-bottom:8px;background:var(--white);transition:.12s;
+  }
+  .ev:hover{border-color:#cdd8d8;box-shadow:var(--shadow)}
+  .ev.over{border-color:#f2cfca;background:#fdf6f5}
+  .ev.soon{border-color:#f0dcae;background:#fefbf2}
+  .ev.done{opacity:.5}
+  .ev.done .ev-t{text-decoration:line-through}
+  .ev-date{
+    width:52px;flex:0 0 52px;text-align:center;border-right:1px solid var(--line-2);padding-right:12px;
+  }
+  .ev-date .dd{font-family:'Space Grotesk';font-weight:700;font-size:19px;line-height:1}
+  .ev-date .mm{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:700}
+  .ev.over .ev-date .dd{color:var(--red)}
+  .ev.soon .ev-date .dd{color:var(--amber)}
+  .ev-body{flex:1;min-width:0}
+  .ev-t{font-size:14px;font-weight:600;line-height:1.3}
+  .ev-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:4px}
+  .ev-owner{
+    display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ink-2);
+    background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:2px 9px 2px 4px;cursor:pointer;
+  }
+  .ev-owner .d{width:14px;height:14px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:8px;font-weight:700}
+  .ev-tag{font-size:11px;font-weight:700;color:var(--petrol);background:#e8f3f2;border-radius:20px;padding:2px 9px}
+  .ev-desc{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+  .ev-act{display:flex;gap:4px;align-items:center;flex:0 0 auto}
+  .ev-check{
+    width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);background:#fff;display:grid;
+    place-items:center;color:transparent;transition:.12s;flex:0 0 auto;
+  }
+  .ev-check:hover{border-color:var(--cerrado)}
+  .ev-check.ok{background:var(--cerrado);border-color:var(--cerrado);color:#fff}
+  .ev-check svg{width:14px;height:14px}
+  .mini-x{border:0;background:transparent;color:var(--ink-3);border-radius:8px;width:26px;height:26px;display:grid;place-items:center}
+  .mini-x:hover{background:#fdf1f0;color:var(--red)}
+  .crono-empty{color:var(--ink-3);font-size:14px;text-align:center;padding:50px 20px}
+
+  /* ===== Mural ===== */
+  .mural-flex{flex:1;min-height:0;display:flex;flex-direction:column;max-width:780px;width:100%;margin:0 auto;padding:0 18px}
+  .mural-msgs{flex:1;overflow-y:auto;padding:22px 4px 12px;display:flex;flex-direction:column;gap:2px}
+  .msg{display:flex;gap:10px;padding:5px 4px;max-width:86%}
+  .msg .mav{width:34px;height:34px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;overflow:hidden;background:var(--ink-3)}
+  .msg .mav img{width:100%;height:100%;object-fit:cover}
+  .msg-b{min-width:0}
+  .msg-head{display:flex;gap:8px;align-items:baseline;margin-bottom:2px}
+  .msg-head .nm{font-size:12.5px;font-weight:700}
+  .msg-head .tm{font-size:10.5px;color:var(--ink-3)}
+  .msg-txt{
+    background:var(--panel);border:1px solid var(--line);border-radius:4px 14px 14px 14px;
+    padding:9px 13px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word;
+  }
+  .msg.mine{align-self:flex-end;flex-direction:row-reverse}
+  .msg.mine .msg-head{justify-content:flex-end}
+  .msg.mine .msg-txt{background:var(--petrol);border-color:var(--petrol);color:#f0fbfa;border-radius:14px 4px 14px 14px}
+  .msg .del{opacity:0;transition:.12s;border:0;background:transparent;color:var(--ink-3);font-size:11px;cursor:pointer;align-self:center}
+  .msg:hover .del{opacity:1}
+  .msg .del:hover{color:var(--red)}
+  .day-sep{align-self:center;font-size:11px;font-weight:700;color:var(--ink-3);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin:14px 0 8px}
+  .composer{
+    border-top:1px solid var(--line);padding:12px 4px 16px;display:flex;gap:9px;align-items:flex-end;background:var(--white);
+  }
+  .composer .who{
+    display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:11px;padding:8px 11px;
+    font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--panel);cursor:pointer;flex:0 0 auto;max-width:150px;
+  }
+  .composer .who .d{width:9px;height:9px;border-radius:50%;background:var(--ink-3);flex:0 0 auto}
+  .composer .who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .composer textarea{
+    flex:1;border:1px solid var(--line);border-radius:13px;padding:10px 14px;font-size:14px;resize:none;
+    outline:0;max-height:120px;line-height:1.4;background:var(--white);
+  }
+  .composer textarea:focus{border-color:var(--petrol)}
+  .send{
+    width:42px;height:42px;border-radius:13px;border:0;background:var(--petrol);color:#eafcfb;display:grid;place-items:center;flex:0 0 auto;transition:.15s;
+  }
+  .send:hover{background:var(--petrol-d)}
+  .send svg{width:18px;height:18px}
+  .mural-empty{color:var(--ink-3);font-size:14px;text-align:center;margin:auto;padding:40px}
+
+  /* ===== Fotos ===== */
+  .fotos-scroll{flex:1;overflow-y:auto}
+  .fotos-wrap{max-width:1020px;margin:0 auto;padding:26px 22px 60px}
+  .gallery{columns:3;column-gap:14px}
+  @media (max-width:860px){.gallery{columns:2}}
+  @media (max-width:520px){.gallery{columns:1}}
+  .ph{
+    break-inside:avoid;margin-bottom:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:var(--white);cursor:zoom-in;transition:.15s;
+  }
+  .ph:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .ph img{width:100%;display:block}
+  .ph-cap{padding:9px 12px;font-size:12.5px;color:var(--ink-2);line-height:1.4}
+  .ph-cap .by{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+  .fotos-empty{color:var(--ink-3);font-size:14px;text-align:center;padding:60px 20px}
+  .lightbox{position:fixed;inset:0;background:rgba(10,24,28,.9);z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:92vw;max-height:78vh;border-radius:12px;box-shadow:var(--shadow-lg)}
+  .lb-cap{color:#d6e6e6;font-size:14px;margin-top:14px;text-align:center;max-width:700px}
+  .lb-cap .by{color:#8fa8a8;font-size:12px}
+  .lb-x{position:absolute;top:18px;right:18px;border:0;background:rgba(255,255,255,.12);color:#fff;width:38px;height:38px;border-radius:11px;font-size:17px}
+  .lb-del{margin-top:12px;border:1px solid rgba(255,120,110,.5);background:transparent;color:#ffb3aa;border-radius:10px;padding:7px 14px;font-size:12.5px;font-weight:600}
+
   /* Modal */
   .overlay{position:fixed;inset:0;background:rgba(16,38,44,.34);backdrop-filter:blur(2px);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:34px 16px;overflow-y:auto}
   .overlay.open{display:flex}
@@ -203,30 +357,72 @@
   .lp{font-size:12px;font-weight:600;padding:6px 11px;border-radius:9px;border:1px solid var(--line);background:var(--white);color:var(--ink-2);cursor:pointer;transition:.12s}
   .lp.on{background:var(--petrol);border-color:var(--petrol);color:#fff}
   .photo-pick{display:flex;align-items:center;gap:14px}
-  .photo-prev{width:62px;height:62px;border-radius:14px;object-fit:cover;background:var(--panel);flex:0 0 auto;display:grid;place-items:center;color:var(--ink-3);font-size:11px;text-align:center}
+  .photo-prev{width:62px;height:62px;border-radius:14px;object-fit:cover;background:var(--panel);flex:0 0 auto;display:grid;place-items:center;color:var(--ink-3);font-size:11px;text-align:center;overflow:hidden}
   .rep-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
   .rep-row input{flex:1}
   .icon-x{border:1px solid var(--line);background:#fff;border-radius:9px;width:36px;height:36px;display:grid;place-items:center;color:var(--ink-3);flex:0 0 auto}
   .icon-x:hover{border-color:var(--red);color:var(--red)}
   .add-mini{font-size:12px;font-weight:600;color:var(--petrol);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+  .notice{
+    background:#f2f9f8;border:1px solid #cfe6e4;border-radius:11px;padding:10px 13px;font-size:12.5px;color:var(--petrol-d);
+    line-height:1.45;margin-bottom:14px;
+  }
+  .id-list{display:flex;flex-direction:column;gap:5px;max-height:340px;overflow-y:auto;margin-bottom:6px}
+  .id-item{
+    display:flex;align-items:center;gap:11px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;
+    background:var(--white);cursor:pointer;transition:.12s;text-align:left;font-size:13.5px;font-weight:600;color:var(--ink);
+  }
+  .id-item:hover{border-color:var(--petrol);background:#f4faf9}
+  .id-item .av{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;overflow:hidden;flex:0 0 auto}
+  .id-item .av img{width:100%;height:100%;object-fit:cover}
+  .id-item .lv{margin-left:auto;font-size:11px;color:var(--ink-3);font-weight:600}
+  .pin-input{
+    font-family:'Space Grotesk';font-size:22px;letter-spacing:.4em;text-align:center;border:1px solid var(--line);
+    border-radius:12px;padding:12px;width:100%;outline:0;
+  }
+  .pin-input:focus{border-color:var(--petrol)}
 
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13.5px;font-weight:500;opacity:0;pointer-events:none;transition:.25s;z-index:80;box-shadow:var(--shadow-lg)}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13.5px;font-weight:500;opacity:0;pointer-events:none;transition:.25s;z-index:90;box-shadow:var(--shadow-lg);max-width:88vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   .recado-prev{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:13px;line-height:1.5;color:var(--ink-2);white-space:pre-wrap;min-height:70px}
-  .count-badge{font-family:'Space Grotesk';font-weight:600;font-size:12px;color:var(--ink-3)}
 
+  /* Loading */
+  .loading{position:fixed;inset:0;background:var(--white);z-index:100;display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;transition:opacity .3s}
+  .loading.off{opacity:0;pointer-events:none}
+  .loading .mark{width:54px;height:54px;border-radius:15px;background:radial-gradient(120% 120% at 25% 20%,#1a7a82,var(--petrol));display:grid;place-items:center;color:#dff3f2;animation:pulse 1.4s ease-in-out infinite}
+  .loading .mark svg{width:30px;height:30px}
+  .loading p{font-size:13px;color:var(--ink-3);margin:0}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+  @media (max-width:1020px){
+    .tabs .tab span.tl{display:none}
+    .tabs .tab{padding:8px 11px}
+  }
   @media (max-width:920px){
     .side{position:absolute;left:0;top:0;bottom:0;z-index:15;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--shadow-lg)}
     .side.open{transform:translateX(0)}
     .detail.open{position:absolute;right:0;top:0;bottom:0;z-index:16;width:min(360px,88vw);flex-basis:min(360px,88vw);box-shadow:var(--shadow-lg)}
     .grid2{grid-template-columns:1fr}
     .menu-btn{display:inline-flex !important}
+    .topbar{gap:8px;padding:10px 12px}
+    .brand .sub{display:none}
+    .brand h1{font-size:16px}
+    .search{min-width:120px}
+    .btn .bl{display:none}
+    .msg{max-width:94%}
   }
   .menu-btn{display:none}
 </style>
 </head>
-<body>
+<body data-view="rede">
+
+<div class="loading" id="loading">
+  <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><line x1="7.7" y1="7.2" x2="10.4" y2="15.2"/><line x1="16.4" y1="8.6" x2="13.4" y2="15.6"/><line x1="8" y1="6.3" x2="15.6" y2="6.8"/></svg></div>
+  <p id="loadingMsg">Conectando à rede…</p>
+</div>
+
 <div class="app">
 
   <!-- TOPBAR -->
@@ -243,77 +439,174 @@
         <div class="sub">LIPAN · LEFA · CELBE</div>
       </div>
     </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-view="rede">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="17" r="2.2"/><line x1="7.6" y1="7.3" x2="10.5" y2="15"/><line x1="16.5" y1="8.7" x2="13.5" y2="15.3"/></svg>
+        <span class="tl">Rede</span>
+      </button>
+      <button class="tab" data-view="crono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="tl">Cronograma</span><span class="badge" id="cronoBadge" style="display:none"></span>
+      </button>
+      <button class="tab" data-view="mural">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="tl">Mural</span><span class="badge" id="muralBadge" style="display:none"></span>
+      </button>
+      <button class="tab" data-view="fotos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="tl">Fotos</span>
+      </button>
+    </nav>
+
     <div class="spacer"></div>
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <input id="search" placeholder="Buscar pessoa, tema ou linha">
     </div>
-    <button class="btn" id="recadoBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Recados
+    <button class="id-chip" id="idChip" title="Identificar-se">
+      <span class="av" id="idAv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span id="idName">Quem é você?</span>
     </button>
-    <button class="btn" id="dataBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Dados
+    <button class="btn ghost" id="adminBtn" title="Modo coordenador">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="lockIcon"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </button>
+    <button class="btn" id="recadoBtn" title="Recado via WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+      <span class="bl">Recado</span>
     </button>
     <button class="btn primary" id="addBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Novo membro
+      <span class="bl">Novo membro</span>
     </button>
   </div>
 
-  <!-- STATS -->
-  <div class="stats" id="stats"></div>
-
-  <!-- MAIN -->
-  <div class="main">
-    <!-- SIDE -->
-    <aside class="side" id="side">
-      <div class="block">
-        <h3>Nível</h3>
-        <div id="legend"></div>
-      </div>
-      <div class="block">
-        <h3>Linha de pesquisa</h3>
-        <div id="linhaFilters"></div>
-      </div>
-      <div class="block">
-        <div class="field-row">
-          <label>Programa</label>
-          <select class="mini" id="fPrograma"><option value="">Todos</option></select>
+  <!-- ============ VIEW: REDE ============ -->
+  <div class="view on" id="viewRede">
+    <div class="stats" id="stats"></div>
+    <div class="main">
+      <aside class="side" id="side">
+        <div class="block">
+          <h3>Nível <span class="hint" style="text-transform:none;letter-spacing:0">(clique para ver só um)</span></h3>
+          <div id="legend"></div>
         </div>
-        <div class="field-row">
-          <label>Situação</label>
-          <select class="mini" id="fStatus">
-            <option value="">Todas</option>
-            <option value="ativo">Ativo</option>
-            <option value="egresso">Egresso</option>
+        <div class="block">
+          <h3>Linha de pesquisa</h3>
+          <div id="linhaFilters"></div>
+        </div>
+        <div class="block">
+          <div class="field-row">
+            <label>Programa</label>
+            <select class="mini" id="fPrograma"><option value="">Todos</option></select>
+          </div>
+          <div class="field-row">
+            <label>Situação</label>
+            <select class="mini" id="fStatus">
+              <option value="">Todas</option>
+              <option value="ativo">Ativo</option>
+              <option value="egresso">Egresso</option>
+            </select>
+          </div>
+          <span class="link-clear" id="clearFilters">Limpar filtros</span>
+        </div>
+      </aside>
+
+      <div class="graph-wrap">
+        <svg class="graph" id="graph"></svg>
+        <div class="empty-graph" id="emptyGraph">Nenhum membro corresponde aos filtros.</div>
+        <div class="graph-controls">
+          <select id="grouping">
+            <option value="free">Força livre</option>
+            <option value="linha">Agrupar por linha</option>
+            <option value="nivel">Agrupar por nível</option>
           </select>
+          <label class="toggle"><input type="checkbox" id="tLabels" checked> Nomes</label>
+          <button class="btn ghost" id="fitBtn" title="Recentralizar" style="padding:6px 9px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
         </div>
-        <span class="link-clear" id="clearFilters">Limpar filtros</span>
       </div>
-    </aside>
 
-    <!-- GRAPH -->
-    <div class="graph-wrap">
-      <svg class="graph" id="graph"></svg>
-      <div class="empty-graph" id="emptyGraph">Nenhum membro corresponde aos filtros.</div>
-      <div class="graph-controls">
-        <select id="grouping">
-          <option value="free">Força livre</option>
-          <option value="linha">Agrupar por linha</option>
-          <option value="nivel">Agrupar por nível</option>
-        </select>
-        <label class="toggle"><input type="checkbox" id="tLabels" checked> Nomes</label>
-        <button class="btn ghost" id="fitBtn" title="Recentralizar" style="padding:6px 9px">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      <aside class="detail" id="detail"><div class="detail-inner" id="detailInner"></div></aside>
+    </div>
+  </div>
+
+  <!-- ============ VIEW: CRONOGRAMA ============ -->
+  <div class="view" id="viewCrono">
+    <div class="crono-scroll">
+      <div class="crono-wrap">
+        <div class="view-head">
+          <div>
+            <h2>Cronograma</h2>
+            <div class="sub">Prazos individuais e eventos do grupo, em tempo real.</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn" id="myPrazoBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Meu prazo
+          </button>
+          <button class="btn primary" id="newEventBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Evento do grupo
+          </button>
+        </div>
+        <div class="crono-filters">
+          <select class="mini" id="cNivel" style="width:auto"><option value="">Todos os níveis</option></select>
+          <select class="mini" id="cTipo" style="width:auto">
+            <option value="">Tudo</option>
+            <option value="grupo">Só eventos do grupo</option>
+            <option value="prazo">Só prazos individuais</option>
+          </select>
+          <label class="toggle"><input type="checkbox" id="cMeus"> Só os meus</label>
+          <label class="toggle"><input type="checkbox" id="cFeitos"> Mostrar concluídos</label>
+        </div>
+        <div id="cronoList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW: MURAL ============ -->
+  <div class="view" id="viewMural">
+    <div class="mural-flex">
+      <div class="mural-msgs" id="muralMsgs"><div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div></div>
+      <div class="composer">
+        <button class="who" id="whoBtn" title="Trocar identidade"><span class="d" id="whoDot"></span><span id="whoName">visitante</span></button>
+        <textarea id="chatInput" rows="1" placeholder="Escreva para o grupo…"></textarea>
+        <button class="send" id="sendBtn" title="Enviar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
         </button>
       </div>
     </div>
-
-    <!-- DETAIL -->
-    <aside class="detail" id="detail"><div class="detail-inner" id="detailInner"></div></aside>
   </div>
+
+  <!-- ============ VIEW: FOTOS ============ -->
+  <div class="view" id="viewFotos">
+    <div class="fotos-scroll">
+      <div class="fotos-wrap">
+        <div class="view-head">
+          <div>
+            <h2>Fotos do grupo</h2>
+            <div class="sub">Campo, laboratório, defesas e eventos. Qualquer membro pode enviar.</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn primary" id="addPhotoBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Enviar foto
+          </button>
+        </div>
+        <div class="gallery" id="gallery"></div>
+        <div class="fotos-empty" id="fotosEmpty" style="display:none">Nenhuma foto ainda. Envie a primeira do grupo.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-x" id="lbClose">×</button>
+  <img id="lbImg" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+  <button class="lb-del" id="lbDel" style="display:none">Apagar esta foto</button>
 </div>
 
 <!-- MEMBER MODAL -->
@@ -321,6 +614,7 @@
   <div class="modal">
     <div class="modal-h"><h2 id="memberTitle">Novo membro</h2><div class="spacer"></div><button class="btn ghost" data-close="memberOverlay">Fechar</button></div>
     <div class="modal-b">
+      <div class="notice" id="selfEditNote" style="display:none">Você está editando o seu próprio cadastro. Atualize sua foto, seus prazos e seus resultados sempre que quiser.</div>
       <div class="fg">
         <label>Foto</label>
         <div class="photo-pick">
@@ -355,7 +649,7 @@
           <select id="mStatus"><option value="ativo">Ativo</option><option value="egresso">Egresso</option></select>
         </div>
         <div class="fg"><label>Origem ou instituição parceira</label><input id="mOrigem" placeholder="Ex.: Holanda, Radboud"></div>
-        <div class="fg"><label>Telefone (opcional, para recado direto)</label><input id="mTelefone" placeholder="Ex.: 5565999998888"></div>
+        <div class="fg"><label>Telefone (para recado direto)</label><input id="mTelefone" placeholder="Ex.: 5565999998888"></div>
       </div>
       <div class="fg full"><label>Tema de pesquisa</label><textarea id="mTema" placeholder="Descreva o objeto de estudo"></textarea></div>
       <div class="fg full">
@@ -376,9 +670,102 @@
       <div class="fg full"><label>Notas</label><textarea id="mNotas" placeholder="Observações internas"></textarea></div>
     </div>
     <div class="modal-f">
-      <button class="btn" id="deleteMember" style="margin-right:auto;display:none;border-color:#f2cfca;color:var(--red)">Descadastrar</button>
+      <button class="btn danger" id="deleteMember" style="margin-right:auto;display:none">Descadastrar</button>
       <button class="btn" data-close="memberOverlay">Cancelar</button>
       <button class="btn primary" id="saveMember">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- IDENTITY MODAL -->
+<div class="overlay" id="idOverlay">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-h"><h2>Quem é você?</h2><div class="spacer"></div><button class="btn ghost" data-close="idOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <p class="hint" style="margin:0 0 14px">Escolha o seu nome para assinar mensagens no mural e para editar o seu próprio cadastro, prazos e foto. A escolha fica salva neste aparelho.</p>
+      <div class="id-list" id="idList"></div>
+      <button class="btn" id="idGuest" style="width:100%;justify-content:center">Continuar como visitante</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN MODAL -->
+<div class="overlay" id="pinOverlay">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-h"><h2>Modo coordenador</h2><div class="spacer"></div><button class="btn ghost" data-close="pinOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <p class="hint" style="margin:0 0 14px">Digite o PIN para cadastrar e remover membros, criar eventos do grupo e moderar o mural.</p>
+      <input class="pin-input" id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="····">
+      <div id="pinChangeArea" style="display:none;margin-top:16px">
+        <div class="fg"><label>Trocar PIN (opcional)</label><input id="newPin" placeholder="Novo PIN"></div>
+        <button class="btn" id="savePinBtn" style="width:100%;justify-content:center">Salvar novo PIN</button>
+        <button class="btn danger" id="logoutAdminBtn" style="width:100%;justify-content:center;margin-top:8px">Sair do modo coordenador</button>
+      </div>
+    </div>
+    <div class="modal-f" id="pinFooter">
+      <button class="btn" data-close="pinOverlay">Cancelar</button>
+      <button class="btn primary" id="pinOkBtn">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT MODAL -->
+<div class="overlay" id="eventOverlay">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-h"><h2 id="eventTitle">Evento do grupo</h2><div class="spacer"></div><button class="btn ghost" data-close="eventOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <div class="fg"><label>Título</label><input id="eTitulo" placeholder="Ex.: Reunião geral do laboratório"></div>
+      <div class="grid2">
+        <div class="fg"><label>Data</label><input type="date" id="eData"></div>
+        <div class="fg"><label>Hora (opcional)</label><input type="time" id="eHora"></div>
+      </div>
+      <div class="fg"><label>Descrição (opcional)</label><textarea id="eDesc" placeholder="Pauta, local, link da chamada…"></textarea></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-close="eventOverlay">Cancelar</button>
+      <button class="btn primary" id="saveEventBtn">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MY PRAZO MODAL -->
+<div class="overlay" id="prazoOverlay">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-h"><h2>Meu prazo</h2><div class="spacer"></div><button class="btn ghost" data-close="prazoOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <p class="hint" style="margin:0 0 14px" id="prazoWho"></p>
+      <div class="fg"><label>Entrega</label><input id="pTitulo" placeholder="Ex.: Qualificação, envio do artigo, relatório"></div>
+      <div class="fg"><label>Data</label><input type="date" id="pData"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-close="prazoOverlay">Cancelar</button>
+      <button class="btn primary" id="savePrazoBtn">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div class="overlay" id="photoOverlay">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-h"><h2>Enviar foto</h2><div class="spacer"></div><button class="btn ghost" data-close="photoOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <div class="fg">
+        <label>Imagem</label>
+        <div class="photo-pick">
+          <div class="photo-prev" id="gPrev" style="width:90px;height:90px">sem foto</div>
+          <div style="flex:1">
+            <button class="btn" id="gPickBtn" style="width:100%;justify-content:center">Escolher arquivo</button>
+            <input type="file" id="gFile" accept="image/*" style="display:none">
+            <p class="hint" style="margin:8px 0 0">A imagem é redimensionada e enviada para o armazenamento do grupo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="fg"><label>Legenda (opcional)</label><input id="gCap" placeholder="Ex.: Coleta no rio Paraguai, jun 2026"></div>
+      <div class="fg"><label>Enviada por</label><input id="gAutor" placeholder="Seu nome"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-close="photoOverlay">Cancelar</button>
+      <button class="btn primary" id="savePhotoBtn">Publicar</button>
     </div>
   </div>
 </div>
@@ -386,9 +773,9 @@
 <!-- RECADO MODAL -->
 <div class="overlay" id="recadoOverlay">
   <div class="modal" style="max-width:520px">
-    <div class="modal-h"><h2>Gerar recado</h2><div class="spacer"></div><button class="btn ghost" data-close="recadoOverlay">Fechar</button></div>
+    <div class="modal-h"><h2>Recado via WhatsApp</h2><div class="spacer"></div><button class="btn ghost" data-close="recadoOverlay">Fechar</button></div>
     <div class="modal-b">
-      <p class="hint" style="margin:0 0 14px">A plataforma monta o texto pronto. A conversa continua no WhatsApp, onde o grupo já está.</p>
+      <p class="hint" style="margin:0 0 14px">Para conversa dentro da plataforma, use o Mural. O recado leva o texto pronto para o WhatsApp de um membro ou do grupo.</p>
       <div class="fg"><label>Destinatário</label>
         <select id="rDest"><option value="all">Grupo todo (filtro atual)</option></select>
       </div>
@@ -403,25 +790,38 @@
   </div>
 </div>
 
-<!-- DATA MODAL -->
-<div class="overlay" id="dataOverlay">
-  <div class="modal" style="max-width:460px">
-    <div class="modal-h"><h2>Dados da rede</h2><div class="spacer"></div><button class="btn ghost" data-close="dataOverlay">Fechar</button></div>
-    <div class="modal-b">
-      <p class="hint" style="margin:0 0 16px">Os dados ficam salvos neste navegador. Exporte para levar para a versão com Firebase ou para backup.</p>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <button class="btn" id="exportBtn" style="justify-content:flex-start">Exportar tudo em JSON</button>
-        <button class="btn" id="importBtn" style="justify-content:flex-start">Importar de um arquivo JSON</button>
-        <input type="file" id="importFile" accept="application/json" style="display:none">
-        <button class="btn" id="resetBtn" style="justify-content:flex-start;border-color:#f2cfca;color:var(--red)">Restaurar dados iniciais</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, addDoc, updateDoc, getDoc, limit }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref as sRef, uploadString, getDownloadURL, deleteObject }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBWcGAa3CWurSiDs5udEtESGwCGGnYTX5Y",
+  authDomain: "brasa-pantanal.firebaseapp.com",
+  projectId: "brasa-pantanal",
+  storageBucket: "brasa-pantanal.firebasestorage.app",
+  messagingSenderId: "876718329822",
+  appId: "1:876718329822:web:e0e0254ee909a933dad74f"
+};
+const app = initializeApp(firebaseConfig);
+window.db = getFirestore(app);
+window.storage = getStorage(app);
+window.fbFns = {
+  collection, doc, getDocs, setDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp,
+  addDoc, updateDoc, getDoc, limit, sRef, uploadString, getDownloadURL, deleteObject
+};
+window.dispatchEvent(new Event('firebase-ready'));
+</script>
 
 <script>
+/* ==================================================================
+   REDE DE PESQUISA · LIPAN/LEFA/CELBE
+   Firestore (prefixo rede_) + Storage no projeto brasa-pantanal
+   ================================================================== */
+
 /* ============ CONFIG ============ */
 const NIVEIS = {
   posdoc:   {label:'Pós-doutorado', short:'Pós-doc', color:'#0E5C63', r:16},
@@ -433,6 +833,7 @@ const NIVEIS = {
 };
 const LINHAS = ['Carbono e GEE','Cinzas e fogo','Qualidade do ar e PM2.5','Microclima e meteorologia','Saúde e clima','Mudanças climáticas e assentamentos','Recursos hídricos e qualidade da água','Qualidade ambiental e sensoriamento','Biodiversidade e peixes','Turfeiras','Hidrovia','Extensão e visibilidade','Educação e aulas de campo','IA e créditos de carbono'];
 const P = 'https://ernandes-sobreira.github.io/';
+const DEFAULT_PIN = '2024';
 
 const SEED = [
   {nome:'Ana Paula',nivel:'posdoc',programa:'PPGCA',status:'ativo',origem:'',tema:'Carbono estocado em solo e plantas, fluxo de carbono e correlação com a qualidade ambiental no Centro-Oeste de Mato Grosso.',linhas:['Carbono e GEE','Qualidade ambiental e sensoriamento'],plataforma:''},
@@ -443,7 +844,7 @@ const SEED = [
   {nome:'Josy',nivel:'doutorado',programa:'PPGCA',status:'ativo',origem:'',tema:'Qualidade dos córregos urbanos da bacia do rio Paraguai.',linhas:['Recursos hídricos e qualidade da água'],plataforma:''},
   {nome:'Thiago',nivel:'doutorado',programa:'PPGCA',status:'ativo',origem:'',tema:'Impacto da hidrovia no Pantanal.',linhas:['Hidrovia','Recursos hídricos e qualidade da água'],plataforma:''},
   {nome:'Gustavo Bisinoto',nivel:'doutorado',programa:'PPGCA',status:'egresso',origem:'',tema:'Créditos de carbono e inteligência artificial.',linhas:['IA e créditos de carbono','Carbono e GEE'],plataforma:''},
-  {nome:'Gustavo Zaninelo',nivel:'doutorado',programa:'PPGCA',status:'ativo',origem:'',tema:'Efeito das cinzas na qualidade da água, gases de efeito estufa, fluxo de carbono, CH4 e CO2. Nível assumido como Doutorado, confirme.',linhas:['Cinzas e fogo','Carbono e GEE'],plataforma:P+'cinzas-project/'},
+  {nome:'Gustavo Zaninelo',nivel:'doutorado',programa:'PPGCA',status:'ativo',origem:'',tema:'Efeito das cinzas na qualidade da água, gases de efeito estufa, fluxo de carbono, CH4 e CO2.',linhas:['Cinzas e fogo','Carbono e GEE'],plataforma:P+'cinzas-project/'},
   {nome:'Edilaina',nivel:'mestrado',programa:'PPGCA',status:'ativo',origem:'',tema:'Impactos das mudanças climáticas em assentamentos de Rondônia.',linhas:['Mudanças climáticas e assentamentos'],plataforma:''},
   {nome:'Elaine',nivel:'mestrado',programa:'PROFÁGUA',status:'ativo',origem:'',tema:'Protocolo de aulas de campo em recursos hídricos para crianças atípicas, principalmente autistas.',linhas:['Educação e aulas de campo','Recursos hídricos e qualidade da água'],plataforma:''},
   {nome:'Maria Gonçalves',nivel:'mestrado',programa:'PROFÁGUA',status:'ativo',origem:'',tema:'Efeitos das mudanças climáticas em assentados de Nossa Senhora do Livramento.',linhas:['Mudanças climáticas e assentamentos','Recursos hídricos e qualidade da água'],plataforma:''},
@@ -463,38 +864,210 @@ const SEED = [
 ];
 
 /* ============ STATE ============ */
-const KEY='redepesquisa_ernandes_v1';
-let state = load();
+let state = { members: [], chat: [], schedule: [], photos: [], settings: {groupLink:'', pin: DEFAULT_PIN} };
 let hiddenNiveis = new Set();
 let hiddenLinhas = new Set();
 let selectedId = null;
 let editingId = null;
 let simulation = null;
-
-function uid(){return 'm'+Math.random().toString(36).slice(2,9)}
-function load(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(raw){const d=JSON.parse(raw); if(d.members&&d.members.length) return d;}
-  }catch(e){}
-  return seedState();
-}
-function seedState(){
-  return {members:SEED.map(s=>({id:uid(),foto:'',telefone:'',resultados:[],prazos:[],notas:'',...s})), settings:{groupLink:''}};
-}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('Não foi possível salvar. Verifique o espaço do navegador.')}}
+let isAdmin = false;
+let myId = localStorage.getItem('rede_myId') || null;       // membro que "sou eu"
+let myName = localStorage.getItem('rede_myName') || '';      // nome de assinatura
+let currentView = 'rede';
+let lastSeenChat = +localStorage.getItem('rede_lastSeenChat') || 0;
+let lbPhotoId = null;
+const FB = () => window.fbFns;
 
 /* ============ HELPERS ============ */
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
-function initials(n){return n.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function uid(){return 'm'+Math.random().toString(36).slice(2,9)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
+function initials(n){return (n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
 function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function dateInfo(d){
   if(!d) return null;
   const t=new Date(d+'T00:00:00'), now=new Date(); now.setHours(0,0,0,0);
   const diff=Math.round((t-now)/86400000);
   return {diff, over:diff<0, soon:diff>=0&&diff<=7, label:t.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})};
+}
+function fmtTime(ts){
+  if(!ts) return '';
+  const d=new Date(ts), now=new Date();
+  const sameDay=d.toDateString()===now.toDateString();
+  return sameDay ? d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
+                 : d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function dayLabel(ts){
+  const d=new Date(ts), now=new Date();
+  const y=new Date(now); y.setDate(now.getDate()-1);
+  if(d.toDateString()===now.toDateString()) return 'Hoje';
+  if(d.toDateString()===y.toDateString()) return 'Ontem';
+  return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+}
+function memberById(id){return state.members.find(m=>m.id===id)}
+
+/* ============ FIREBASE LAYER ============ */
+let dbReady = false;
+function waitFirebase(){
+  return new Promise(res=>{
+    if(window.db && window.fbFns){dbReady=true;return res()}
+    window.addEventListener('firebase-ready',()=>{dbReady=true;res()},{once:true});
+  });
+}
+
+async function bootstrap(){
+  await waitFirebase();
+  const f=FB();
+  try{
+    // MEMBERS: seed apenas se coleção vazia (nunca sobrescreve)
+    const memSnap = await f.getDocs(f.collection(window.db,'rede_members'));
+    if(memSnap.empty){
+      $('#loadingMsg').textContent='Preparando a rede pela primeira vez…';
+      for(const s of SEED){
+        const id=uid();
+        await f.setDoc(f.doc(window.db,'rede_members',id),
+          {id,foto:'',telefone:'',resultados:[],prazos:[],notas:'',createdAt:f.serverTimestamp(),...s});
+      }
+    }
+    // SETTINGS
+    const setRef=f.doc(window.db,'rede_settings','app');
+    const setSnap=await f.getDoc(setRef);
+    if(setSnap.exists()) state.settings={...state.settings,...setSnap.data()};
+    else await f.setDoc(setRef,{groupLink:'',pin:DEFAULT_PIN});
+
+    subscribeAll();
+    $('#loading').classList.add('off');
+  }catch(e){
+    console.error(e);
+    $('#loadingMsg').innerHTML='Não foi possível conectar ao banco de dados.<br>Verifique a conexão e as regras do Firestore.';
+  }
+}
+
+function subscribeAll(){
+  const f=FB();
+  // MEMBERS
+  f.onSnapshot(f.collection(window.db,'rede_members'),snap=>{
+    state.members=snap.docs.map(d=>({...d.data(),id:d.id}));
+    state.members.forEach(m=>{m.linhas=m.linhas||[];m.resultados=m.resultados||[];m.prazos=m.prazos||[]});
+    if(currentView==='rede') renderAll();
+    if(currentView==='crono') renderCrono();
+    refreshMemberDependentUI();
+    if(selectedId && memberById(selectedId)) renderDetail();
+  });
+  // CHAT
+  f.onSnapshot(f.query(f.collection(window.db,'rede_chat'),f.orderBy('ts','asc')),snap=>{
+    state.chat=snap.docs.map(d=>({...d.data(),id:d.id}));
+    if(currentView==='mural'){ renderMural(); markChatSeen(); }
+    else updateMuralBadge();
+  });
+  // SCHEDULE (eventos do grupo)
+  f.onSnapshot(f.query(f.collection(window.db,'rede_schedule'),f.orderBy('data','asc')),snap=>{
+    state.schedule=snap.docs.map(d=>({...d.data(),id:d.id}));
+    if(currentView==='crono') renderCrono();
+    updateCronoBadge();
+  });
+  // PHOTOS
+  f.onSnapshot(f.query(f.collection(window.db,'rede_photos'),f.orderBy('ts','desc')),snap=>{
+    state.photos=snap.docs.map(d=>({...d.data(),id:d.id}));
+    if(currentView==='fotos') renderFotos();
+  });
+}
+
+async function fbSetMember(id,data){
+  const f=FB();
+  await f.setDoc(f.doc(window.db,'rede_members',id),data,{merge:true});
+}
+async function fbDeleteMember(id){
+  const f=FB();
+  await f.deleteDoc(f.doc(window.db,'rede_members',id));
+}
+async function fbAddChat(msg){
+  const f=FB();
+  await f.addDoc(f.collection(window.db,'rede_chat'),msg);
+}
+async function fbDeleteChat(id){
+  const f=FB();
+  await f.deleteDoc(f.doc(window.db,'rede_chat',id));
+}
+async function fbSaveSettings(){
+  const f=FB();
+  await f.setDoc(f.doc(window.db,'rede_settings','app'),state.settings,{merge:true});
+}
+
+/* upload base64 dataURL -> Storage, retorna URL */
+async function fbUploadImage(pathPrefix,dataUrl){
+  const f=FB();
+  const path=`rede_uploads/${pathPrefix}_${Date.now()}_${Math.random().toString(36).slice(2,7)}.jpg`;
+  const r=f.sRef(window.storage,path);
+  await f.uploadString(r,dataUrl,'data_url');
+  const url=await f.getDownloadURL(r);
+  return {url,path};
+}
+
+/* ============ IDENTITY / ADMIN ============ */
+function isMe(id){ return myId && id===myId }
+function canEditMember(id){ return isAdmin || isMe(id) }
+
+function refreshIdentityUI(){
+  const chip=$('#idChip'), av=$('#idAv'), nm=$('#idName');
+  const me = myId ? memberById(myId) : null;
+  if(me){
+    nm.textContent=me.nome;
+    av.innerHTML = me.foto ? `<img src="${esc(me.foto)}" alt="">` : initials(me.nome);
+    av.style.background = NIVEIS[me.nivel]?.color || 'var(--ink-3)';
+  } else if(myName){
+    nm.textContent=myName; av.innerHTML=initials(myName); av.style.background='var(--ink-3)';
+  } else {
+    nm.textContent='Quem é você?';
+    av.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+    av.style.background='var(--ink-3)';
+  }
+  chip.classList.toggle('admin',isAdmin);
+  // who no mural
+  const me2=myId?memberById(myId):null;
+  $('#whoName').textContent = me2 ? me2.nome : (myName||'visitante');
+  $('#whoDot').style.background = me2 ? (NIVEIS[me2.nivel]?.color||'var(--ink-3)') : 'var(--ink-3)';
+  // admin lock icon
+  $('#lockIcon').innerHTML = isAdmin
+    ? '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0"/>'
+    : '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>';
+  $('#adminBtn').style.color = isAdmin ? 'var(--petrol)' : '';
+  // botões restritos
+  updateAdminButtons();
+}
+function updateAdminButtons(){
+  $('#addBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+  $('#newEventBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+}
+function refreshMemberDependentUI(){
+  refreshIdentityUI();
+  // dropdown de níveis no cronograma
+  const cn=$('#cNivel'); const cur=cn.value;
+  cn.innerHTML='<option value="">Todos os níveis</option>'+
+    Object.entries(NIVEIS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  cn.value=cur;
+}
+
+function openIdentity(){
+  const list=$('#idList');
+  const ordered=[...state.members].sort((a,b)=>{
+    const oa=Object.keys(NIVEIS).indexOf(a.nivel), ob=Object.keys(NIVEIS).indexOf(b.nivel);
+    return oa-ob || a.nome.localeCompare(b.nome);
+  });
+  list.innerHTML=ordered.map(m=>{
+    const nv=NIVEIS[m.nivel];
+    const av=m.foto?`<img src="${esc(m.foto)}" alt="">`:initials(m.nome);
+    return `<button class="id-item" data-id="${m.id}">
+      <span class="av" style="background:${nv.color}">${av}</span>
+      ${esc(m.nome)}<span class="lv">${nv.short}</span></button>`;
+  }).join('') || '<p class="hint">Nenhum membro cadastrado ainda.</p>';
+  list.querySelectorAll('.id-item').forEach(b=>b.onclick=()=>{
+    myId=b.dataset.id; const m=memberById(myId); myName=m?m.nome:'';
+    localStorage.setItem('rede_myId',myId); localStorage.setItem('rede_myName',myName);
+    refreshIdentityUI(); closeOverlay('idOverlay'); toast('Você agora está identificado como '+myName+'.');
+  });
+  openOverlay('idOverlay');
 }
 
 /* ============ FILTER LOGIC ============ */
@@ -514,7 +1087,7 @@ function visibleMembers(){
   });
 }
 function buildLinks(members){
-  const links=[]; const ids=new Set(members.map(m=>m.id));
+  const links=[];
   for(let i=0;i<members.length;i++){
     for(let j=i+1;j<members.length;j++){
       const shared=members[i].linhas.filter(l=>members[j].linhas.includes(l) && !hiddenLinhas.has(l));
@@ -537,14 +1110,15 @@ function renderStats(){
   el.appendChild(card(total,'Membros','',()=>{clearFilters()}, false));
   for(const [k,v] of Object.entries(NIVEIS)){
     const n=state.members.filter(m=>m.nivel===k).length; if(!n) continue;
-    el.appendChild(card(n, v.short, v.color, ()=>{ toggleSoloNivel(k) }, hiddenNiveis.size && !hiddenNiveis.has(k) && [...NIVEIS].length));
+    const soloOn = hiddenNiveis.size>0 && !hiddenNiveis.has(k);
+    el.appendChild(card(n, v.short, v.color, ()=>{ toggleSoloNivel(k) }, soloOn));
   }
-  // alerts
   const prazos=[]; state.members.forEach(m=>(m.prazos||[]).forEach(p=>{if(!p.feito){const di=dateInfo(p.data); if(di&&(di.over||di.soon)) prazos.push({m,p,di})}}));
   if(prazos.length){
     const a=document.createElement('div'); a.className='stat alert';
     const over=prazos.filter(x=>x.di.over).length;
     a.innerHTML=`<div class="n" style="color:var(--amber)">${prazos.length}</div><div class="l">Entregas ${over?over+' vencidas, ':''}próximas</div>`;
+    a.onclick=()=>switchView('crono');
     el.appendChild(a);
   }
 }
@@ -561,8 +1135,11 @@ function renderLegend(){
   for(const [k,v] of Object.entries(NIVEIS)){
     const n=state.members.filter(m=>m.nivel===k).length; if(!n) continue;
     const d=document.createElement('div'); d.className='legend-item'+(hiddenNiveis.has(k)?' off':'');
-    d.innerHTML=`<span class="sw" style="background:${v.color}"></span>${v.label}<span class="c">${n}</span>`;
-    d.onclick=()=>{hiddenNiveis.has(k)?hiddenNiveis.delete(k):hiddenNiveis.add(k);renderAll()};
+    d.innerHTML=`<span class="sw" style="background:${v.color}"></span>${v.label}<span class="solo">só este</span><span class="c">${n}</span>`;
+    d.onclick=(e)=>{
+      if(e.target.classList.contains('solo')){ toggleSoloNivel(k); return; }
+      hiddenNiveis.has(k)?hiddenNiveis.delete(k):hiddenNiveis.add(k);renderAll();
+    };
     el.appendChild(d);
   }
 }
@@ -597,7 +1174,7 @@ function initGraph(){
   zoomBehavior=d3.zoom().scaleExtent([.35,3]).on('zoom',e=>g.attr('transform',e.transform));
   svg.call(zoomBehavior);
 }
-function graphSize(){const r=$('#graph').getBoundingClientRect();return [r.width,r.height]}
+function graphSize(){const r=$('#graph').getBoundingClientRect();return [r.width||600,r.height||400]}
 
 function renderGraph(){
   const members=visibleMembers();
@@ -608,7 +1185,6 @@ function renderGraph(){
 
   members.forEach(m=>{ if(m.x==null){m.x=W/2+(Math.random()-.5)*200; m.y=H/2+(Math.random()-.5)*200} });
 
-  // group centroids
   let groupKey=null, groups=[];
   if(grouping==='linha'){ groupKey=m=>m.linhas[0]||'—'; groups=[...new Set(members.map(groupKey))]; }
   if(grouping==='nivel'){ groupKey=m=>m.nivel; groups=Object.keys(NIVEIS).filter(k=>members.some(m=>m.nivel===k)); }
@@ -628,14 +1204,12 @@ function renderGraph(){
     simulation.force('x',d3.forceX(W/2).strength(.03)).force('y',d3.forceY(H/2).strength(.03));
   }
 
-  // LINKS
   gLink.selectAll('line').data(links,d=>d.source.id+'-'+d.target.id).join(
     e=>e.append('line').attr('class','link').attr('stroke-width',d=>0.8+d.w*0.9),
     u=>u.attr('stroke-width',d=>0.8+d.w*0.9),
     x=>x.remove()
   );
 
-  // NODES
   const showLabels=$('#tLabels').checked;
   gNode.selectAll('g.node').data(members,d=>d.id).join(
     enter=>{
@@ -685,7 +1259,6 @@ function hoverNode(d,on){
   gNode.selectAll('g.node').classed('dim',n=>on&&!neigh.has(n.id));
 }
 function fitView(){
-  const [W,H]=graphSize();
   svg.transition().duration(400).call(zoomBehavior.transform,d3.zoomIdentity);
   if(simulation) simulation.alpha(.5).restart();
 }
@@ -703,7 +1276,6 @@ function renderDetail(){
   const m=state.members.find(x=>x.id===selectedId); if(!m)return;
   const nv=NIVEIS[m.nivel];
   const inner=$('#detailInner');
-  // neighbors
   const others=state.members.filter(o=>o.id!==m.id);
   const neigh=others.map(o=>({o,shared:o.linhas.filter(l=>m.linhas.includes(l))})).filter(x=>x.shared.length)
     .sort((a,b)=>b.shared.length-a.shared.length);
@@ -711,6 +1283,7 @@ function renderDetail(){
     ? `<img class="avatar" src="${esc(m.foto)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar',style:'background:${nv.color}',textContent:'${initials(m.nome)}'}))">`
     : `<div class="avatar" style="background:${nv.color}">${initials(m.nome)}</div>`;
   const prazos=(m.prazos||[]).slice().sort((a,b)=>(a.data||'').localeCompare(b.data||''));
+  const editable=canEditMember(m.id);
 
   inner.innerHTML=`
     <div class="dh">
@@ -736,7 +1309,7 @@ function renderDetail(){
     ${m.notas?`<div class="dsec"><div class="lab">Notas</div><p>${esc(m.notas)}</p></div>`:''}
     <div class="dsec"><div class="lab">Trabalha com (${neigh.length})</div><div class="neighbors">${neigh.slice(0,10).map(x=>`<div class="nb" onclick="selectNode('${x.o.id}')"><span class="d" style="background:${NIVEIS[x.o.nivel].color}"></span>${esc(x.o.nome)}<span class="via">${esc(x.shared[0])}${x.shared.length>1?' +'+(x.shared.length-1):''}</span></div>`).join('')||'<span style="color:var(--ink-3);font-size:13px">Sem ligações pelas linhas atuais.</span>'}</div></div>
     <div class="dactions">
-      <button class="btn primary" style="flex:1" onclick="openMember('${m.id}')">Editar</button>
+      ${editable?`<button class="btn primary" style="flex:1" onclick="openMember('${m.id}')">Editar</button>`:`<button class="btn" style="flex:1" disabled title="Só ${esc(m.nome)} ou o coordenador podem editar">Editar (bloqueado)</button>`}
       <button class="btn" onclick="recadoTo('${m.id}')">Recado</button>
     </div>`;
 }
@@ -748,15 +1321,22 @@ function filterLinha(l){
 /* ============ MEMBER FORM ============ */
 let formLinhas=new Set(), formResultados=[], formPrazos=[], formFoto='';
 function openMember(id){
+  if(id && !canEditMember(id)){ toast('Só '+memberById(id).nome+' ou o coordenador podem editar este cadastro.'); return; }
+  if(!id && !isAdmin){ toast('Só o coordenador pode cadastrar novos membros.'); return; }
   editingId=id||null;
   const m = id? state.members.find(x=>x.id===id): null;
   $('#memberTitle').textContent = m? 'Editar membro':'Novo membro';
-  $('#deleteMember').style.display = m? 'inline-flex':'none';
+  $('#deleteMember').style.display = (m && isAdmin)? 'inline-flex':'none';
+  $('#selfEditNote').style.display = (m && isMe(id) && !isAdmin) ? 'block':'none';
   $('#mNome').value=m?m.nome:''; $('#mNivel').value=m?m.nivel:'doutorado';
   $('#mPrograma').value=m?m.programa:''; $('#mStatus').value=m?m.status:'ativo';
   $('#mOrigem').value=m?m.origem||'':''; $('#mTelefone').value=m?m.telefone||'':'';
   $('#mTema').value=m?m.tema:''; $('#mPlataforma').value=m?m.plataforma||'':'';
   $('#mNotas').value=m?m.notas||'':'';
+  const lockField=(el,locked)=>{el.disabled=locked};
+  // não-admin editando o próprio: pode mexer em foto, tema, plataforma, resultados, prazos, notas — não em nível/programa/status
+  const restrict = m && isMe(id) && !isAdmin;
+  ['mNivel','mPrograma','mStatus','mOrigem'].forEach(k=>lockField($('#'+k),restrict));
   formLinhas=new Set(m?m.linhas:[]);
   formResultados=m?JSON.parse(JSON.stringify(m.resultados||[])):[];
   formPrazos=m?JSON.parse(JSON.stringify(m.prazos||[])):[];
@@ -798,47 +1378,346 @@ function renderPhotoPrev(){
   if(formFoto){el.innerHTML=`<img src="${esc(formFoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:14px" onerror="this.parentNode.textContent='URL inválida'">`;}
   else el.textContent='sem foto';
 }
-function saveMember(){
+async function saveMember(){
   const nome=$('#mNome').value.trim();
   if(!nome){toast('Informe o nome.');return}
+  if(editingId && !canEditMember(editingId)){toast('Sem permissão para editar este cadastro.');return}
+  if(!editingId && !isAdmin){toast('Só o coordenador pode cadastrar novos membros.');return}
+
+  let fotoUrl=formFoto;
+  if(formFoto && formFoto.startsWith('data:')){
+    try{
+      toast('Enviando foto…');
+      const {url}=await fbUploadImage('membro_'+(editingId||nome.replace(/\s+/g,'_')),formFoto);
+      fotoUrl=url;
+    }catch(e){ console.error(e); toast('Falha ao enviar a foto. Salvando sem imagem.'); fotoUrl=''; }
+  }
+
   const data={
     nome, nivel:$('#mNivel').value, programa:$('#mPrograma').value.trim(), status:$('#mStatus').value,
     origem:$('#mOrigem').value.trim(), telefone:$('#mTelefone').value.trim(),
     tema:$('#mTema').value.trim(), plataforma:$('#mPlataforma').value.trim(), notas:$('#mNotas').value.trim(),
-    linhas:[...formLinhas], resultados:formResultados.filter(r=>r.titulo||r.url), prazos:formPrazos.filter(p=>p.titulo), foto:formFoto
+    linhas:[...formLinhas], resultados:formResultados.filter(r=>r.titulo||r.url), prazos:formPrazos.filter(p=>p.titulo), foto:fotoUrl
   };
-  if(editingId){ Object.assign(state.members.find(x=>x.id===editingId), data); }
-  else { const id=uid(); state.members.push({id,...data}); }
-  save(); closeOverlay('memberOverlay'); renderAll();
-  if(editingId&&selectedId===editingId) renderDetail();
-  toast(editingId?'Membro atualizado.':'Membro cadastrado.');
+  try{
+    if(editingId){ await fbSetMember(editingId,data); }
+    else { const id=uid(); await fbSetMember(id,{id,...data,createdAt:FB().serverTimestamp()}); }
+    closeOverlay('memberOverlay'); toast(editingId?'Membro atualizado.':'Membro cadastrado.');
+  }catch(e){ console.error(e); toast('Erro ao salvar. Verifique a conexão.'); }
 }
-function deleteMember(){
-  if(!editingId)return;
+async function deleteMember(){
+  if(!editingId || !isAdmin)return;
   if(!confirm('Descadastrar este membro? A ação não pode ser desfeita.'))return;
-  state.members=state.members.filter(x=>x.id!==editingId);
-  save(); closeOverlay('memberOverlay'); if(selectedId===editingId)closeDetail(); renderAll();
-  toast('Membro removido.');
+  try{
+    await fbDeleteMember(editingId);
+    closeOverlay('memberOverlay'); if(selectedId===editingId)closeDetail();
+    toast('Membro removido.');
+  }catch(e){ console.error(e); toast('Erro ao remover.'); }
 }
 
-/* Photo upload with downscale */
+/* Photo upload with downscale -> dataURL (form foto do membro) */
 function handleFile(file){
   if(!file)return;
   const reader=new FileReader();
   reader.onload=e=>{
     const img=new Image();
     img.onload=()=>{
-      const max=256, sc=Math.min(1,max/Math.max(img.width,img.height));
+      const max=360, sc=Math.min(1,max/Math.max(img.width,img.height));
       const c=document.createElement('canvas'); c.width=img.width*sc; c.height=img.height*sc;
       c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      formFoto=c.toDataURL('image/jpeg',0.82); $('#mFoto').value=''; renderPhotoPrev();
+      formFoto=c.toDataURL('image/jpeg',0.85); $('#mFoto').value=''; renderPhotoPrev();
     };
     img.src=e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-/* ============ RECADO ============ */
+/* ============ CRONOGRAMA ============ */
+function updateCronoBadge(){
+  const n=state.schedule.filter(e=>{const di=dateInfo(e.data); return di&&(di.over||di.soon)&&!e.feito}).length
+    + state.members.reduce((s,m)=>s+(m.prazos||[]).filter(p=>{const di=dateInfo(p.data);return di&&(di.over||di.soon)&&!p.feito}).length,0);
+  const b=$('#cronoBadge');
+  if(n){b.textContent=n;b.style.display='grid'} else b.style.display='none';
+}
+function buildCronoItems(){
+  const items=[];
+  state.schedule.forEach(e=>items.push({
+    kind:'grupo', id:e.id, titulo:e.titulo, data:e.data, hora:e.hora||'', desc:e.descricao||'',
+    feito:!!e.feito, ownerName:'Grupo', ownerColor:'var(--petrol)', ownerId:null
+  }));
+  state.members.forEach(m=>(m.prazos||[]).forEach((p,i)=>items.push({
+    kind:'prazo', id:m.id+'::'+i, memberId:m.id, idx:i, titulo:p.titulo, data:p.data, desc:'',
+    feito:!!p.feito, ownerName:m.nome, ownerColor:NIVEIS[m.nivel]?.color||'#888', ownerId:m.id, nivel:m.nivel
+  })));
+  return items.filter(x=>x.data);
+}
+function renderCrono(){
+  const wrap=$('#cronoList');
+  const nivel=$('#cNivel').value, tipo=$('#cTipo').value, soMeus=$('#cMeus').checked, mostrarFeitos=$('#cFeitos').checked;
+  let items=buildCronoItems();
+  if(nivel) items=items.filter(x=>x.kind==='grupo'||x.nivel===nivel);
+  if(tipo) items=items.filter(x=>x.kind===tipo);
+  if(soMeus){ if(!myId){toast('Identifique-se primeiro para filtrar "só os meus".'); $('#cMeus').checked=false;} else items=items.filter(x=>x.kind==='grupo'||x.ownerId===myId); }
+  if(!mostrarFeitos) items=items.filter(x=>!x.feito);
+  items.sort((a,b)=>a.data.localeCompare(b.data));
+
+  if(!items.length){ wrap.innerHTML='<div class="crono-empty">Nenhum evento ou prazo encontrado com esses filtros.</div>'; return; }
+
+  const groups={};
+  items.forEach(it=>{
+    const di=dateInfo(it.data);
+    let bucket='Futuro';
+    if(it.feito) bucket='Concluído';
+    else if(di.over) bucket='Atrasado';
+    else if(di.diff===0) bucket='Hoje';
+    else if(di.soon) bucket='Próximos 7 dias';
+    (groups[bucket]=groups[bucket]||[]).push({it,di});
+  });
+  const order=['Atrasado','Hoje','Próximos 7 dias','Futuro','Concluído'];
+  wrap.innerHTML=order.filter(k=>groups[k]).map(k=>{
+    const list=groups[k];
+    return `<div class="crono-group"><h4>${k} <span class="n">${list.length}</span></h4>${list.map(({it,di})=>{
+      const cls=it.feito?'done':(di.over?'over':di.soon?'soon':'');
+      const canToggle = it.kind==='grupo' ? isAdmin : canEditMember(it.ownerId);
+      const canDel = it.kind==='grupo' ? isAdmin : canEditMember(it.ownerId);
+      return `<div class="ev ${cls}">
+        <div class="ev-date"><div class="dd">${di.label.split(' ')[0]}</div><div class="mm">${di.label.split(' ')[1]}</div></div>
+        <div class="ev-body">
+          <div class="ev-t">${esc(it.titulo)}${it.hora?' · '+it.hora:''}</div>
+          <div class="ev-meta">
+            <span class="ev-owner"><span class="d" style="background:${it.ownerColor}"></span>${esc(it.ownerName)}</span>
+            ${it.kind==='grupo'?'<span class="ev-tag">Evento do grupo</span>':''}
+          </div>
+          ${it.desc?`<div class="ev-desc">${esc(it.desc)}</div>`:''}
+        </div>
+        <div class="ev-act">
+          <button class="ev-check ${it.feito?'ok':''}" ${canToggle?'':'disabled style="opacity:.3"'} onclick="toggleCronoItem('${it.kind}','${it.id}')" title="Marcar concluído">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          ${canDel?`<button class="mini-x" onclick="deleteCronoItem('${it.kind}','${it.id}')" title="Excluir">×</button>`:''}
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }).join('');
+}
+async function toggleCronoItem(kind,id){
+  if(kind==='grupo'){
+    if(!isAdmin){toast('Só o coordenador altera eventos do grupo.');return}
+    const ev=state.schedule.find(x=>x.id===id); if(!ev)return;
+    await FB().updateDoc(FB().doc(window.db,'rede_schedule',id),{feito:!ev.feito});
+  }else{
+    const [mid,idxS]=id.split('::'); const idx=+idxS;
+    if(!canEditMember(mid)){toast('Sem permissão.');return}
+    const m=memberById(mid); if(!m)return;
+    const prazos=JSON.parse(JSON.stringify(m.prazos||[]));
+    if(!prazos[idx])return;
+    prazos[idx].feito=!prazos[idx].feito;
+    await fbSetMember(mid,{prazos});
+  }
+}
+async function deleteCronoItem(kind,id){
+  if(!confirm('Excluir este item do cronograma?'))return;
+  if(kind==='grupo'){
+    if(!isAdmin){toast('Só o coordenador remove eventos do grupo.');return}
+    await FB().deleteDoc(FB().doc(window.db,'rede_schedule',id));
+  }else{
+    const [mid,idxS]=id.split('::'); const idx=+idxS;
+    if(!canEditMember(mid)){toast('Sem permissão.');return}
+    const m=memberById(mid); if(!m)return;
+    const prazos=JSON.parse(JSON.stringify(m.prazos||[]));
+    prazos.splice(idx,1);
+    await fbSetMember(mid,{prazos});
+  }
+}
+function openEventModal(){
+  if(!isAdmin){toast('Só o coordenador cria eventos do grupo.');return}
+  $('#eventTitle').textContent='Evento do grupo';
+  $('#eTitulo').value=''; $('#eData').value=''; $('#eHora').value=''; $('#eDesc').value='';
+  openOverlay('eventOverlay');
+}
+async function saveEvent(){
+  const titulo=$('#eTitulo').value.trim(), data=$('#eData').value;
+  if(!titulo||!data){toast('Preencha título e data.');return}
+  try{
+    await FB().addDoc(FB().collection(window.db,'rede_schedule'),{
+      titulo, data, hora:$('#eHora').value||'', descricao:$('#eDesc').value.trim(), feito:false, ts:FB().serverTimestamp()
+    });
+    closeOverlay('eventOverlay'); toast('Evento criado.');
+  }catch(e){console.error(e);toast('Erro ao criar evento.')}
+}
+function openPrazoModal(){
+  if(!myId){ toast('Identifique-se primeiro para adicionar um prazo seu.'); openIdentity(); return; }
+  $('#prazoWho').textContent='Prazo para '+memberById(myId).nome+'.';
+  $('#pTitulo').value=''; $('#pData').value='';
+  openOverlay('prazoOverlay');
+}
+async function saveMyPrazo(){
+  const titulo=$('#pTitulo').value.trim(), data=$('#pData').value;
+  if(!titulo||!data){toast('Preencha a entrega e a data.');return}
+  const m=memberById(myId); if(!m)return;
+  const prazos=[...(m.prazos||[]),{titulo,data,feito:false}];
+  try{
+    await fbSetMember(myId,{prazos});
+    closeOverlay('prazoOverlay'); toast('Prazo adicionado.');
+  }catch(e){console.error(e);toast('Erro ao salvar prazo.')}
+}
+
+/* ============ MURAL (CHAT) ============ */
+function updateMuralBadge(){
+  const unread=state.chat.filter(c=>(c.ts?.toMillis?c.ts.toMillis():+new Date(c.ts||0))>lastSeenChat).length;
+  const b=$('#muralBadge');
+  if(currentView!=='mural' && unread){b.textContent=unread>9?'9+':unread;b.style.display='grid'} else b.style.display='none';
+}
+function markChatSeen(){
+  lastSeenChat=Date.now();
+  localStorage.setItem('rede_lastSeenChat',lastSeenChat);
+  $('#muralBadge').style.display='none';
+}
+function renderMural(){
+  const wrap=$('#muralMsgs');
+  if(!state.chat.length){ wrap.innerHTML='<div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div>'; return; }
+  let html=''; let lastDay=null;
+  state.chat.forEach(c=>{
+    const ms = c.ts?.toMillis?c.ts.toMillis():+new Date(c.ts||Date.now());
+    const dl=dayLabel(ms);
+    if(dl!==lastDay){ html+=`<div class="day-sep">${dl}</div>`; lastDay=dl; }
+    const mine = (myId && c.authorId===myId) || (!myId && myName && c.author===myName);
+    const canDel = isAdmin || mine;
+    const av = c.authorFoto ? `<img src="${esc(c.authorFoto)}" alt="">` : initials(c.author);
+    html+=`<div class="msg ${mine?'mine':''}">
+      <div class="mav" style="background:${c.authorColor||'var(--ink-3)'}">${av}</div>
+      <div class="msg-b">
+        <div class="msg-head"><span class="nm">${esc(c.author)}</span><span class="tm">${fmtTime(ms)}</span></div>
+        <div class="msg-txt">${esc(c.text)}</div>
+      </div>
+      ${canDel?`<button class="del" onclick="deleteChatMsg('${c.id}')" title="Apagar">×</button>`:''}
+    </div>`;
+  });
+  wrap.innerHTML=html;
+  wrap.scrollTop=wrap.scrollHeight;
+}
+async function sendChat(){
+  const ta=$('#chatInput'); const text=ta.value.trim();
+  if(!text)return;
+  const me = myId? memberById(myId): null;
+  const author = me? me.nome : (myName||'visitante');
+  const authorColor = me? (NIVEIS[me.nivel]?.color||'var(--ink-3)') : 'var(--ink-3)';
+  try{
+    await fbAddChat({
+      text, author, authorId: myId||null, authorFoto: me?me.foto||'':'', authorColor, ts: FB().serverTimestamp()
+    });
+    ta.value=''; ta.style.height='auto';
+  }catch(e){ console.error(e); toast('Erro ao enviar. Verifique a conexão.'); }
+}
+async function deleteChatMsg(id){
+  if(!confirm('Apagar esta mensagem?'))return;
+  try{ await fbDeleteChat(id); }catch(e){console.error(e);toast('Erro ao apagar.')}
+}
+
+/* ============ FOTOS ============ */
+function renderFotos(){
+  const gal=$('#gallery'), empty=$('#fotosEmpty');
+  if(!state.photos.length){ gal.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  gal.innerHTML=state.photos.map(p=>`
+    <div class="ph" data-id="${p.id}">
+      <img src="${esc(p.url)}" alt="${esc(p.legenda||'')}" loading="lazy">
+      ${(p.legenda||p.autor)?`<div class="ph-cap">${esc(p.legenda||'')}${p.autor?`<span class="by">por ${esc(p.autor)}</span>`:''}</div>`:''}
+    </div>`).join('');
+  gal.querySelectorAll('.ph').forEach(el=>el.onclick=()=>openLightbox(el.dataset.id));
+}
+function openLightbox(id){
+  const p=state.photos.find(x=>x.id===id); if(!p)return;
+  lbPhotoId=id;
+  $('#lbImg').src=p.url;
+  $('#lbCap').innerHTML=`${esc(p.legenda||'')}${p.autor?`<div class="by">por ${esc(p.autor)}</div>`:''}`;
+  $('#lbDel').style.display=(isAdmin || (myName && p.autor===myName) || (myId && p.autorId===myId)) ? 'inline-flex':'none';
+  $('#lightbox').classList.add('open');
+}
+function closeLightbox(){ $('#lightbox').classList.remove('open'); lbPhotoId=null; }
+async function deleteLightboxPhoto(){
+  if(!lbPhotoId)return;
+  if(!confirm('Apagar esta foto?'))return;
+  const p=state.photos.find(x=>x.id===lbPhotoId);
+  try{
+    await FB().deleteDoc(FB().doc(window.db,'rede_photos',lbPhotoId));
+    if(p?.storagePath){ try{ await FB().deleteObject(FB().sRef(window.storage,p.storagePath)); }catch(e){} }
+    closeLightbox(); toast('Foto removida.');
+  }catch(e){ console.error(e); toast('Erro ao remover.'); }
+}
+let photoFoto='';
+function openPhotoModal(){
+  photoFoto='';
+  $('#gPrev').textContent='sem foto'; $('#gPrev').innerHTML='sem foto';
+  $('#gCap').value='';
+  const me=myId?memberById(myId):null;
+  $('#gAutor').value= me?me.nome:(myName||'');
+  openOverlay('photoOverlay');
+}
+function handleGalleryFile(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=1280, sc=Math.min(1,max/Math.max(img.width,img.height));
+      const c=document.createElement('canvas'); c.width=img.width*sc; c.height=img.height*sc;
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      photoFoto=c.toDataURL('image/jpeg',0.85);
+      $('#gPrev').innerHTML=`<img src="${photoFoto}" style="width:100%;height:100%;object-fit:cover;border-radius:14px">`;
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+async function savePhoto(){
+  if(!photoFoto){toast('Escolha uma imagem.');return}
+  try{
+    toast('Enviando foto…');
+    const {url,path}=await fbUploadImage('galeria',photoFoto);
+    await FB().addDoc(FB().collection(window.db,'rede_photos'),{
+      url, storagePath:path, legenda:$('#gCap').value.trim(), autor:$('#gAutor').value.trim(),
+      autorId: myId||null, ts: FB().serverTimestamp()
+    });
+    closeOverlay('photoOverlay'); toast('Foto publicada.');
+  }catch(e){ console.error(e); toast('Erro ao enviar a foto.'); }
+}
+
+/* ============ ADMIN / PIN ============ */
+function openPin(){
+  $('#pinInput').value='';
+  if(isAdmin){
+    $('#pinChangeArea').style.display='block';
+    $('#pinFooter').style.display='none';
+  }else{
+    $('#pinChangeArea').style.display='none';
+    $('#pinFooter').style.display='flex';
+  }
+  openOverlay('pinOverlay');
+  setTimeout(()=>$('#pinInput').focus(),50);
+}
+function checkPin(){
+  const v=$('#pinInput').value.trim();
+  if(v===(state.settings.pin||DEFAULT_PIN)){
+    isAdmin=true; refreshIdentityUI(); renderAll(); if(currentView==='crono')renderCrono();
+    closeOverlay('pinOverlay'); toast('Modo coordenador ativado.');
+  }else{
+    toast('PIN incorreto.');
+  }
+}
+async function saveNewPin(){
+  const np=$('#newPin').value.trim();
+  if(!np){toast('Digite um novo PIN.');return}
+  state.settings.pin=np;
+  try{ await fbSaveSettings(); toast('PIN atualizado.'); $('#newPin').value=''; }
+  catch(e){console.error(e);toast('Erro ao salvar PIN.')}
+}
+function logoutAdmin(){
+  isAdmin=false; refreshIdentityUI(); renderAll(); if(currentView==='crono')renderCrono();
+  closeOverlay('pinOverlay'); toast('Modo coordenador desativado.');
+}
+
+/* ============ RECADO (WhatsApp) ============ */
 function openRecado(){
   const sel=$('#rDest');
   sel.innerHTML='<option value="all">Grupo todo (filtro atual)</option>'+
@@ -858,9 +1737,10 @@ function updateRecadoPrev(){
 function copyRecado(){
   navigator.clipboard.writeText($('#rPrev').textContent).then(()=>toast('Recado copiado. Cole no WhatsApp.'));
 }
-function openWhats(){
+async function openWhats(){
   const dest=$('#rDest').value, msg=$('#rPrev').textContent;
-  state.settings.groupLink=$('#rGroup').value.trim(); save();
+  state.settings.groupLink=$('#rGroup').value.trim();
+  try{ await fbSaveSettings(); }catch(e){}
   if(dest!=='all'){
     const m=state.members.find(x=>x.id===dest);
     if(m&&m.telefone){ window.open(`https://wa.me/${m.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank'); return; }
@@ -873,36 +1753,26 @@ function openWhats(){
   else toast('Recado copiado. Salve o link do grupo para abrir direto.');
 }
 
-/* ============ DATA IO ============ */
-function exportData(){
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='rede-pesquisa-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
-  toast('Arquivo exportado.');
-}
-function importData(file){
-  const r=new FileReader();
-  r.onload=e=>{
-    try{
-      const d=JSON.parse(e.target.result);
-      if(!d.members||!Array.isArray(d.members)) throw 0;
-      d.members.forEach(m=>{m.resultados=m.resultados||[];m.prazos=m.prazos||[];m.linhas=m.linhas||[]});
-      state=Object.assign({settings:{groupLink:''}},d); save();
-      closeOverlay('dataOverlay'); closeDetail(); renderAll(); toast('Dados importados.');
-    }catch(err){toast('Arquivo inválido.')}
-  };
-  r.readAsText(file);
-}
-function resetData(){
-  if(!confirm('Restaurar os dados iniciais e apagar o que você cadastrou neste navegador?'))return;
-  state=seedState(); save(); closeOverlay('dataOverlay'); closeDetail(); renderAll(); toast('Dados iniciais restaurados.');
-}
-
 /* ============ OVERLAYS ============ */
 function openOverlay(id){$('#'+id).classList.add('open')}
 function closeOverlay(id){$('#'+id).classList.remove('open')}
 
-/* ============ RENDER ALL ============ */
+/* ============ VIEW SWITCHING ============ */
+function switchView(v){
+  currentView=v;
+  document.body.dataset.view=v;
+  $$('.view').forEach(el=>el.classList.remove('on'));
+  $$('.tab').forEach(el=>el.classList.toggle('on',el.dataset.view===v));
+  ({rede:'viewRede',crono:'viewCrono',mural:'viewMural',fotos:'viewFotos'})[v] &&
+    $('#'+({rede:'viewRede',crono:'viewCrono',mural:'viewMural',fotos:'viewFotos'})[v]).classList.add('on');
+  if(v==='rede') renderAll();
+  if(v==='crono') renderCrono();
+  if(v==='mural'){ renderMural(); markChatSeen(); }
+  if(v==='fotos') renderFotos();
+  $('#side').classList.remove('open');
+}
+
+/* ============ RENDER ALL (rede) ============ */
 function renderAll(){
   renderStats(); renderLegend(); renderLinhaFilters(); renderProgramaFilter(); renderGraph();
 }
@@ -914,11 +1784,24 @@ function clearFilters(){
 
 /* ============ EVENTS ============ */
 initGraph();
-renderAll();
+
+$$('.tab').forEach(t=>t.onclick=()=>switchView(t.dataset.view));
+$('#idChip').onclick=openIdentity;
+$('#idGuest').onclick=()=>{
+  myId=null; localStorage.removeItem('rede_myId');
+  const nm=prompt('Como você quer assinar suas mensagens?','');
+  myName=(nm||'').trim(); localStorage.setItem('rede_myName',myName);
+  refreshIdentityUI(); closeOverlay('idOverlay');
+};
+$('#whoBtn').onclick=openIdentity;
+$('#adminBtn').onclick=openPin;
+$('#pinOkBtn').onclick=checkPin;
+$('#pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPin()});
+$('#savePinBtn').onclick=saveNewPin;
+$('#logoutAdminBtn').onclick=logoutAdmin;
 
 $('#addBtn').onclick=()=>openMember(null);
 $('#recadoBtn').onclick=openRecado;
-$('#dataBtn').onclick=()=>openOverlay('dataOverlay');
 $('#saveMember').onclick=saveMember;
 $('#deleteMember').onclick=deleteMember;
 $('#addRep').onclick=()=>{formResultados.push({titulo:'',url:''});renderRepList()};
@@ -927,27 +1810,48 @@ $('#uploadBtn').onclick=()=>$('#fileInput').click();
 $('#fileInput').onchange=e=>handleFile(e.target.files[0]);
 $('#clearPhoto').onclick=()=>{formFoto='';$('#mFoto').value='';renderPhotoPrev()};
 $('#mFoto').oninput=e=>{formFoto=e.target.value.trim();renderPhotoPrev()};
-$('#search').oninput=()=>renderGraph()&renderStats();
 $('#search').addEventListener('input',renderAll);
 $('#fPrograma').onchange=renderAll; $('#fStatus').onchange=renderAll;
 $('#clearFilters').onclick=clearFilters;
 $('#grouping').onchange=renderGraph;
 $('#tLabels').onchange=renderGraph;
 $('#fitBtn').onclick=fitView;
-$('#exportBtn').onclick=exportData;
-$('#importBtn').onclick=()=>$('#importFile').click();
-$('#importFile').onchange=e=>importData(e.target.files[0]);
-$('#resetBtn').onclick=resetData;
 $('#rDest').onchange=updateRecadoPrev; $('#rMsg').oninput=updateRecadoPrev;
 $('#rCopy').onclick=copyRecado; $('#rOpen').onclick=openWhats;
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
+
+$('#newEventBtn').onclick=openEventModal;
+$('#saveEventBtn').onclick=saveEvent;
+$('#myPrazoBtn').onclick=openPrazoModal;
+$('#savePrazoBtn').onclick=saveMyPrazo;
+$('#cNivel').onchange=renderCrono; $('#cTipo').onchange=renderCrono;
+$('#cMeus').onchange=renderCrono; $('#cFeitos').onchange=renderCrono;
+
+$('#chatInput').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(120,e.target.scrollHeight)+'px'});
+$('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+$('#sendBtn').onclick=sendChat;
+
+$('#addPhotoBtn').onclick=openPhotoModal;
+$('#gPickBtn').onclick=()=>$('#gFile').click();
+$('#gFile').onchange=e=>handleGalleryFile(e.target.files[0]);
+$('#savePhotoBtn').onclick=savePhoto;
+$('#lbClose').onclick=closeLightbox;
+$('#lbDel').onclick=deleteLightboxPhoto;
+$('#lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox()});
+
 $$('[data-close]').forEach(b=>b.onclick=()=>closeOverlay(b.dataset.close));
 $$('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
-window.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.overlay.open').forEach(o=>o.classList.remove('open'));closeDetail()}});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.overlay.open').forEach(o=>o.classList.remove('open'));closeDetail();closeLightbox()}});
 window.addEventListener('resize',()=>{if(simulation){const[W,H]=graphSize();simulation.force('center')&&simulation.force('center').x(W/2).y(H/2);simulation.alpha(.3).restart()}});
 
 // expose for inline handlers
-window.selectNode=selectNode; window.closeDetail=closeDetail; window.openMember=openMember; window.filterLinha=filterLinha; window.recadoTo=recadoTo;
+window.selectNode=selectNode; window.closeDetail=closeDetail; window.openMember=openMember;
+window.filterLinha=filterLinha; window.recadoTo=recadoTo;
+window.toggleCronoItem=toggleCronoItem; window.deleteCronoItem=deleteCronoItem;
+window.deleteChatMsg=deleteChatMsg;
+
+refreshIdentityUI();
+bootstrap();
 </script>
 </body>
 </html>
