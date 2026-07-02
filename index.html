@@ -497,7 +497,7 @@
           <div id="legend"></div>
         </div>
         <div class="block">
-          <h3>Linha de pesquisa</h3>
+          <h3 style="display:flex;align-items:center">Linha de pesquisa<span class="link-clear" id="manageLinhasBtn" style="margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600">gerenciar</span></h3>
           <div id="linhaFilters"></div>
         </div>
         <div class="block">
@@ -706,6 +706,21 @@
   </div>
 </div>
 
+<!-- LINHAS MODAL -->
+<div class="overlay" id="linhasOverlay">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-h"><h2>Linhas de pesquisa</h2><div class="spacer"></div><button class="btn ghost" data-close="linhasOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <p class="hint" style="margin:0 0 14px">Renomear atualiza automaticamente todos os membros que usam essa linha. Excluir remove a linha de quem a tiver marcada — não apaga o membro.</p>
+      <div class="id-list" id="linhasMgmtList" style="max-height:360px"></div>
+      <div class="vinc-row" style="margin-top:10px">
+        <input id="newLinha" placeholder="Nova linha de pesquisa" style="flex:1">
+        <button class="btn primary" id="addLinhaBtn" style="flex:0 0 auto">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PIN MODAL -->
 <div class="overlay" id="pinOverlay">
   <div class="modal" style="max-width:380px">
@@ -849,7 +864,7 @@ const NIVEIS = {
   ic:       {label:'Iniciação Científica', short:'IC', color:'#E0912E', r:9},
   ie:       {label:'Iniciação à Extensão', short:'IE', color:'#D6497A', r:9},
 };
-const LINHAS = ['Carbono e GEE','Cinzas e fogo','Qualidade do ar e PM2.5','Microclima e meteorologia','Saúde e clima','Mudanças climáticas e assentamentos','Recursos hídricos e qualidade da água','Qualidade ambiental e sensoriamento','Biodiversidade e peixes','Turfeiras','Hidrovia','Extensão e visibilidade','Educação e aulas de campo','IA e créditos de carbono'];
+const DEFAULT_LINHAS = ['Carbono e GEE','Cinzas e fogo','Qualidade do ar e PM2.5','Microclima e meteorologia','Saúde e clima','Mudanças climáticas e assentamentos','Recursos hídricos e qualidade da água','Qualidade ambiental e sensoriamento','Biodiversidade e peixes','Turfeiras','Hidrovia','Extensão e visibilidade','Educação e aulas de campo','IA e créditos de carbono'];
 const P = 'https://ernandes-sobreira.github.io/';
 const DEFAULT_PIN = '2024';
 
@@ -896,7 +911,7 @@ const SEED_VINCULOS = [
 ];
 
 /* ============ STATE ============ */
-let state = { members: [], chat: [], schedule: [], photos: [], settings: {groupLink:'', pin: DEFAULT_PIN} };
+let state = { members: [], chat: [], schedule: [], photos: [], linhas: DEFAULT_LINHAS.slice(), settings: {groupLink:'', pin: DEFAULT_PIN} };
 let hiddenNiveis = new Set();
 let hiddenLinhas = new Set();
 let selectedId = null;
@@ -1005,8 +1020,17 @@ async function bootstrap(){
     // SETTINGS
     const setRef=f.doc(window.db,'rede_settings','app');
     const setSnap=await f.getDoc(setRef);
-    if(setSnap.exists()) state.settings={...state.settings,...setSnap.data()};
-    else await f.setDoc(setRef,{groupLink:'',pin:DEFAULT_PIN});
+    if(setSnap.exists()){
+      state.settings={...state.settings,...setSnap.data()};
+      if(!Array.isArray(state.settings.linhas) || !state.settings.linhas.length){
+        state.settings.linhas=DEFAULT_LINHAS.slice();
+        await f.setDoc(setRef,{linhas:state.settings.linhas},{merge:true});
+      }
+    } else {
+      state.settings.linhas=DEFAULT_LINHAS.slice();
+      await f.setDoc(setRef,{groupLink:'',pin:DEFAULT_PIN,linhas:state.settings.linhas});
+    }
+    state.linhas=state.settings.linhas;
 
     subscribeAll();
     $('#loading').classList.add('off');
@@ -1018,6 +1042,16 @@ async function bootstrap(){
 
 function subscribeAll(){
   const f=FB();
+  // SETTINGS (linhas de pesquisa, pin, link do grupo)
+  f.onSnapshot(f.doc(window.db,'rede_settings','app'),snap=>{
+    if(!snap.exists())return;
+    const d=snap.data();
+    state.settings={...state.settings,...d};
+    if(Array.isArray(d.linhas) && d.linhas.length){
+      state.linhas=d.linhas;
+      if(currentView==='rede') renderAll();
+    }
+  });
   // MEMBERS
   f.onSnapshot(f.collection(window.db,'rede_members'),snap=>{
     state.members=snap.docs.map(d=>({...d.data(),id:d.id}));
@@ -1236,7 +1270,7 @@ function renderLegend(){
 }
 function renderLinhaFilters(){
   const el=$('#linhaFilters'); el.innerHTML='';
-  const used=LINHAS.filter(l=>state.members.some(m=>m.linhas.includes(l)));
+  const used=state.linhas.filter(l=>state.members.some(m=>m.linhas.includes(l)));
   used.forEach(l=>{
     const n=state.members.filter(m=>m.linhas.includes(l)).length;
     const d=document.createElement('div'); d.className='filter-item'+(hiddenLinhas.has(l)?' off':'');
@@ -1246,8 +1280,81 @@ function renderLinhaFilters(){
   });
 }
 function linhaColor(l){
-  const i=LINHAS.indexOf(l);
-  return d3.hsl((i*47)%360, .5, .55).toString();
+  let h=0; for(let k=0;k<l.length;k++){h=(h*31+l.charCodeAt(k))>>>0}
+  return d3.hsl(h%360, .5, .55).toString();
+}
+
+/* ============ GESTÃO DE LINHAS DE PESQUISA ============ */
+function openLinhasModal(){
+  if(!isAdmin){ toast('Só o coordenador gerencia as linhas de pesquisa.'); return; }
+  renderLinhasMgmt();
+  $('#newLinha').value='';
+  openOverlay('linhasOverlay');
+}
+function renderLinhasMgmt(){
+  const el=$('#linhasMgmtList'); el.innerHTML='';
+  state.linhas.forEach(l=>{
+    const n=state.members.filter(m=>m.linhas.includes(l)).length;
+    const row=document.createElement('div'); row.className='id-item'; row.style.cursor='default';
+    row.innerHTML=`<span class="av" style="background:${linhaColor(l)}"></span>
+      <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(l)}</span>
+      <span class="lv">${n} membro${n===1?'':'s'}</span>`;
+    const renameBtn=document.createElement('button'); renameBtn.className='btn ghost'; renameBtn.style.padding='6px 8px';
+    renameBtn.textContent='renomear'; renameBtn.onclick=()=>renameLinha(l);
+    const delBtn=document.createElement('button'); delBtn.className='icon-x'; delBtn.textContent='×';
+    delBtn.onclick=()=>deleteLinha(l);
+    row.append(renameBtn,delBtn);
+    el.appendChild(row);
+  });
+  if(!state.linhas.length) el.innerHTML='<p class="hint">Nenhuma linha cadastrada ainda.</p>';
+}
+async function persistLinhas(){
+  state.settings.linhas=state.linhas;
+  hiddenLinhas.clear();
+  try{ await fbSaveSettings(); }catch(e){ console.error(e); toast('Erro ao salvar. Verifique a conexão.'); }
+}
+async function renameLinha(oldName){
+  const novo=(prompt('Renomear "'+oldName+'" para:',oldName)||'').trim();
+  if(!novo || novo===oldName) return;
+  if(state.linhas.some(l=>l===novo)){ toast('Já existe uma linha com esse nome.'); return; }
+  state.linhas=state.linhas.map(l=>l===oldName?novo:l);
+  const afetados=state.members.filter(m=>m.linhas.includes(oldName));
+  try{
+    for(const m of afetados){
+      const linhas=m.linhas.map(l=>l===oldName?novo:l);
+      await fbSetMember(m.id,{linhas});
+    }
+    await persistLinhas();
+    renderLinhasMgmt();
+    toast('Linha renomeada em '+afetados.length+' cadastro(s).');
+  }catch(e){ console.error(e); toast('Erro ao renomear.'); }
+}
+async function deleteLinha(nome){
+  const afetados=state.members.filter(m=>m.linhas.includes(nome));
+  const msg=afetados.length
+    ? `Excluir "${nome}"? Ela será removida do cadastro de ${afetados.length} membro(s). Os membros não são apagados.`
+    : `Excluir "${nome}"?`;
+  if(!confirm(msg)) return;
+  state.linhas=state.linhas.filter(l=>l!==nome);
+  try{
+    for(const m of afetados){
+      const linhas=m.linhas.filter(l=>l!==nome);
+      await fbSetMember(m.id,{linhas});
+    }
+    await persistLinhas();
+    renderLinhasMgmt();
+    toast('Linha excluída.');
+  }catch(e){ console.error(e); toast('Erro ao excluir.'); }
+}
+async function addLinha(){
+  const nome=$('#newLinha').value.trim();
+  if(!nome){ toast('Digite o nome da linha.'); return; }
+  if(state.linhas.includes(nome)){ toast('Essa linha já existe.'); return; }
+  state.linhas=[...state.linhas,nome];
+  await persistLinhas();
+  $('#newLinha').value='';
+  renderLinhasMgmt();
+  toast('Linha adicionada.');
 }
 function renderProgramaFilter(){
   const sel=$('#fPrograma'); const cur=sel.value;
@@ -1408,7 +1515,7 @@ function renderDetail(){
     </div>`;
 }
 function filterLinha(l){
-  hiddenLinhas=new Set(LINHAS.filter(x=>x!==l));
+  hiddenLinhas=new Set(state.linhas.filter(x=>x!==l));
   renderAll(); toast('Filtrando por: '+l);
 }
 
@@ -1447,7 +1554,7 @@ function openMember(id){
 }
 function renderLinhasPick(){
   const el=$('#linhasPick'); el.innerHTML='';
-  LINHAS.forEach(l=>{
+  state.linhas.forEach(l=>{
     const b=document.createElement('button'); b.type='button'; b.className='lp'+(formLinhas.has(l)?' on':''); b.textContent=l;
     b.onclick=()=>{formLinhas.has(l)?formLinhas.delete(l):formLinhas.add(l);b.classList.toggle('on')};
     el.appendChild(b);
@@ -1935,6 +2042,9 @@ $('#mFoto').oninput=e=>{formFoto=e.target.value.trim();renderPhotoPrev()};
 $('#search').addEventListener('input',renderAll);
 $('#fPrograma').onchange=renderAll; $('#fStatus').onchange=renderAll;
 $('#clearFilters').onclick=clearFilters;
+$('#manageLinhasBtn').onclick=openLinhasModal;
+$('#addLinhaBtn').onclick=addLinha;
+$('#newLinha').addEventListener('keydown',e=>{if(e.key==='Enter')addLinha()});
 $('#grouping').onchange=renderGraph;
 $('#tLabels').onchange=renderGraph;
 $('#tHubLinks').onchange=()=>{renderGraph(); if(selectedId) renderDetail();};
