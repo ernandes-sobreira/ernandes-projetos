@@ -271,8 +271,22 @@
   .mini-x:hover{background:#fdf1f0;color:var(--red)}
   .crono-empty{color:var(--ink-3);font-size:14px;text-align:center;padding:50px 20px}
 
+  /* ===== Publicações ===== */
+  .pub-row{display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--line);border-radius:13px;margin-bottom:8px;background:var(--white);transition:.12s}
+  .pub-row:hover{border-color:#cdd8d8;box-shadow:var(--shadow)}
+  .pub-cat{width:5px;align-self:stretch;border-radius:4px;flex:0 0 auto}
+  .pub-body{flex:1;min-width:0}
+  .pub-t{font-size:14px;font-weight:600;line-height:1.3}
+  .pub-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:5px}
+  .pub-cat-tag{font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 9px;color:#fff}
+  .pub-author{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink-2);font-size:12px}
+  .pub-author .d{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+  .pub-date{font-size:11.5px;color:var(--ink-3)}
+  .pub-act{display:flex;gap:4px;align-items:center;flex:0 0 auto}
+
   /* ===== Mural ===== */
   .mural-flex{flex:1;min-height:0;display:flex;flex-direction:column;max-width:780px;width:100%;margin:0 auto;padding:0 18px}
+  .mural-toolbar{display:flex;align-items:center;gap:8px;padding:10px 4px 0;border-bottom:1px solid var(--line-2)}
   .mural-msgs{flex:1;overflow-y:auto;padding:22px 4px 12px;display:flex;flex-direction:column;gap:2px}
   .msg{display:flex;gap:10px;padding:5px 4px;max-width:86%}
   .msg .mav{width:34px;height:34px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;overflow:hidden;background:var(--ink-3)}
@@ -292,6 +306,8 @@
   .msg:hover .del{opacity:1}
   .msg .del:hover{color:var(--red)}
   .day-sep{align-self:center;font-size:11px;font-weight:700;color:var(--ink-3);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin:14px 0 8px}
+  .recado-tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--coral);background:#fdf0f4;border:1px solid #f5cddb;border-radius:20px;padding:2px 9px;margin-bottom:4px}
+  .recado-tag.forme{color:#fff;background:var(--coral);border-color:var(--coral)}
   .composer{
     border-top:1px solid var(--line);padding:12px 4px 16px;display:flex;gap:9px;align-items:flex-end;background:var(--white);
   }
@@ -463,6 +479,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         <span class="tl">Fotos</span>
       </button>
+      <button class="tab" data-view="pubs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        <span class="tl">Publicações</span>
+      </button>
     </nav>
 
     <div class="spacer"></div>
@@ -497,7 +517,11 @@
           <div id="legend"></div>
         </div>
         <div class="block">
-          <h3 style="display:flex;align-items:center">Linha de pesquisa<span class="link-clear" id="manageLinhasBtn" style="margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600">gerenciar</span></h3>
+          <h3>Linha de pesquisa</h3>
+          <button class="btn ghost" id="manageLinhasBtn" style="width:100%;justify-content:flex-start;padding:6px 8px;margin-bottom:8px;font-size:12.5px;color:var(--agua)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            Gerenciar linhas
+          </button>
           <div id="linhaFilters"></div>
         </div>
         <div class="block">
@@ -575,6 +599,14 @@
   <!-- ============ VIEW: MURAL ============ -->
   <div class="view" id="viewMural">
     <div class="mural-flex">
+      <div class="mural-toolbar">
+        <label class="toggle" style="padding:6px 8px 6px 0"><input type="checkbox" id="mOnlyMine"> Só recados pra mim</label>
+        <div class="spacer"></div>
+        <button class="btn" id="muralRecadoBtn" style="padding:6px 11px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+          Recado direcionado
+        </button>
+      </div>
       <div class="mural-msgs" id="muralMsgs"><div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div></div>
       <div class="composer">
         <button class="who" id="whoBtn" title="Trocar identidade"><span class="d" id="whoDot"></span><span id="whoName">visitante</span></button>
@@ -603,6 +635,31 @@
         </div>
         <div class="gallery" id="gallery"></div>
         <div class="fotos-empty" id="fotosEmpty" style="display:none">Nenhuma foto ainda. Envie a primeira do grupo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW: PUBLICAÇÕES ============ -->
+  <div class="view" id="viewPubs">
+    <div class="crono-scroll">
+      <div class="crono-wrap">
+        <div class="view-head">
+          <div>
+            <h2>Publicações</h2>
+            <div class="sub">Notas técnicas, artigos, resumos, plataformas e outros produtos do grupo.</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn primary" id="addPubBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar publicação
+          </button>
+        </div>
+        <div class="crono-filters">
+          <select class="mini" id="pubCategoria" style="width:auto"><option value="">Todas as categorias</option></select>
+          <select class="mini" id="pubPessoa" style="width:auto"><option value="">Todas as pessoas</option></select>
+          <label class="toggle"><input type="checkbox" id="pubMine"> Só as minhas</label>
+        </div>
+        <div id="pubList"></div>
       </div>
     </div>
   </div>
@@ -674,6 +731,11 @@
         <span class="add-mini" id="addVinculo">+ adicionar vínculo com uma pessoa</span>
       </div>
       <div class="fg full"><label>Plataforma</label><input id="mPlataforma" placeholder="https://..."></div>
+      <div class="fg full">
+        <label>Link do Drive com os dados <span class="hint">(precisa estar como "qualquer pessoa com o link")</span></label>
+        <input id="mDrive" placeholder="https://drive.google.com/...">
+        <span class="hint">Esta página não tem login. Qualquer pessoa com a URL do site vê este link e pode abri-lo. Não coloque aqui nada que não possa ser público.</span>
+      </div>
       <div class="fg full">
         <label>Resultados e produtos</label>
         <div id="repList"></div>
@@ -802,22 +864,72 @@
   </div>
 </div>
 
+<!-- PUBLICATION MODAL -->
+<div class="overlay" id="pubOverlay">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-h"><h2>Adicionar publicação</h2><div class="spacer"></div><button class="btn ghost" data-close="pubOverlay">Fechar</button></div>
+    <div class="modal-b">
+      <div class="fg" id="pubAutorRow"><label>Autor(a)</label><select id="pubAutor"></select></div>
+      <div class="fg"><label>Categoria</label>
+        <select id="pubCategoriaSel">
+          <option value="nota_tecnica">Nota técnica</option>
+          <option value="artigo">Artigo científico</option>
+          <option value="resumo_expandido">Resumo expandido</option>
+          <option value="resumo_simples">Resumo simples</option>
+          <option value="visibilidade">Plano de visibilidade</option>
+          <option value="jogo">Jogo</option>
+          <option value="plataforma">Plataforma</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="fg" id="pubOutroRow" style="display:none"><label>Especifique</label><input id="pubOutroTxt" placeholder="Qual tipo de produto?"></div>
+      <div class="fg"><label>Título</label><input id="pubTitulo" placeholder="Título do trabalho"></div>
+      <div class="fg">
+        <label>Conteúdo</label>
+        <div style="display:flex;gap:14px;margin-bottom:8px">
+          <label class="toggle" style="padding:0"><input type="radio" name="pubTipo" value="link" checked> Link</label>
+          <label class="toggle" style="padding:0"><input type="radio" name="pubTipo" value="arquivo"> Arquivo (PDF/Word)</label>
+        </div>
+        <input id="pubUrl" placeholder="https://...">
+        <div id="pubFileArea" style="display:none;margin-top:8px">
+          <button class="btn" id="pubFilePick" style="width:100%;justify-content:center">Escolher arquivo</button>
+          <input type="file" id="pubFile" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+          <p class="hint" id="pubFileName" style="margin:8px 0 0">Nenhum arquivo escolhido. Máximo 15 MB.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-close="pubOverlay">Cancelar</button>
+      <button class="btn primary" id="savePubBtn">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- RECADO MODAL -->
 <div class="overlay" id="recadoOverlay">
   <div class="modal" style="max-width:520px">
-    <div class="modal-h"><h2>Recado via WhatsApp</h2><div class="spacer"></div><button class="btn ghost" data-close="recadoOverlay">Fechar</button></div>
+    <div class="modal-h"><h2>Deixar recado</h2><div class="spacer"></div><button class="btn ghost" data-close="recadoOverlay">Fechar</button></div>
     <div class="modal-b">
-      <p class="hint" style="margin:0 0 14px">Para conversa dentro da plataforma, use o Mural. O recado leva o texto pronto para o WhatsApp de um membro ou do grupo.</p>
+      <p class="hint" style="margin:0 0 14px">O recado é publicado no Mural, visível para todo o grupo. Se for para uma pessoa específica, o nome dela aparece destacado na mensagem.</p>
       <div class="fg"><label>Destinatário</label>
-        <select id="rDest"><option value="all">Grupo todo (filtro atual)</option></select>
+        <select id="rDest"><option value="all">Todo o grupo</option></select>
       </div>
       <div class="fg"><label>Mensagem</label><textarea id="rMsg" placeholder="Escreva o recado" style="min-height:90px"></textarea></div>
       <div class="fg"><label>Pré-visualização</label><div class="recado-prev" id="rPrev"></div></div>
-      <div class="fg"><label>Link do grupo no WhatsApp (opcional)</label><input id="rGroup" placeholder="https://chat.whatsapp.com/..."></div>
+      <details style="margin-top:4px">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-3)">Também enviar pelo WhatsApp</summary>
+        <div style="margin-top:12px">
+          <div class="fg"><label>Link do grupo no WhatsApp (opcional)</label><input id="rGroup" placeholder="https://chat.whatsapp.com/..."></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn" id="rCopy" style="flex:1;justify-content:center">Copiar texto</button>
+            <button class="btn" id="rOpen" style="flex:1;justify-content:center">Abrir WhatsApp</button>
+          </div>
+        </div>
+      </details>
     </div>
     <div class="modal-f">
-      <button class="btn" id="rCopy">Copiar recado</button>
-      <button class="btn primary" id="rOpen">Abrir WhatsApp</button>
+      <button class="btn" data-close="recadoOverlay">Cancelar</button>
+      <button class="btn primary" id="rSend">Publicar no mural</button>
     </div>
   </div>
 </div>
@@ -865,6 +977,16 @@ const NIVEIS = {
   ie:       {label:'Iniciação à Extensão', short:'IE', color:'#D6497A', r:9},
 };
 const DEFAULT_LINHAS = ['Carbono e GEE','Cinzas e fogo','Qualidade do ar e PM2.5','Microclima e meteorologia','Saúde e clima','Mudanças climáticas e assentamentos','Recursos hídricos e qualidade da água','Qualidade ambiental e sensoriamento','Biodiversidade e peixes','Turfeiras','Hidrovia','Extensão e visibilidade','Educação e aulas de campo','IA e créditos de carbono'];
+const CATEGORIAS = {
+  nota_tecnica:     {label:'Nota técnica',            color:'#0E5C63'},
+  artigo:           {label:'Artigo científico',        color:'#1E88C7'},
+  resumo_expandido: {label:'Resumo expandido',         color:'#2E9E5B'},
+  resumo_simples:   {label:'Resumo simples',           color:'#6C5CE0'},
+  visibilidade:     {label:'Plano de visibilidade',    color:'#E0912E'},
+  jogo:             {label:'Jogo',                     color:'#D6497A'},
+  plataforma:       {label:'Plataforma',                color:'#16262c'},
+  outro:            {label:'Outro',                    color:'#7c8b90'},
+};
 const P = 'https://ernandes-sobreira.github.io/';
 const DEFAULT_PIN = '2024';
 
@@ -911,7 +1033,7 @@ const SEED_VINCULOS = [
 ];
 
 /* ============ STATE ============ */
-let state = { members: [], chat: [], schedule: [], photos: [], linhas: DEFAULT_LINHAS.slice(), settings: {groupLink:'', pin: DEFAULT_PIN} };
+let state = { members: [], chat: [], schedule: [], photos: [], publicacoes: [], linhas: DEFAULT_LINHAS.slice(), settings: {groupLink:'', pin: DEFAULT_PIN} };
 let hiddenNiveis = new Set();
 let hiddenLinhas = new Set();
 let selectedId = null;
@@ -1078,6 +1200,11 @@ function subscribeAll(){
     state.photos=snap.docs.map(d=>({...d.data(),id:d.id}));
     if(currentView==='fotos') renderFotos();
   });
+  // PUBLICAÇÕES
+  f.onSnapshot(f.query(f.collection(window.db,'rede_publicacoes'),f.orderBy('ts','desc')),snap=>{
+    state.publicacoes=snap.docs.map(d=>({...d.data(),id:d.id}));
+    if(currentView==='pubs') renderPubs();
+  });
 }
 
 async function fbSetMember(id,data){
@@ -1105,6 +1232,16 @@ async function fbSaveSettings(){
 async function fbUploadImage(pathPrefix,dataUrl){
   const f=FB();
   const path=`rede_uploads/${pathPrefix}_${Date.now()}_${Math.random().toString(36).slice(2,7)}.jpg`;
+  const r=f.sRef(window.storage,path);
+  await f.uploadString(r,dataUrl,'data_url');
+  const url=await f.getDownloadURL(r);
+  return {url,path};
+}
+/* upload genérico (qualquer tipo, preserva extensão original) — usado para PDF/Word das publicações */
+async function fbUploadFile(pathPrefix,dataUrl,filename){
+  const f=FB();
+  const ext=(filename.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const path=`rede_publicacoes/${pathPrefix}_${Date.now()}_${Math.random().toString(36).slice(2,7)}.${ext}`;
   const r=f.sRef(window.storage,path);
   await f.uploadString(r,dataUrl,'data_url');
   const url=await f.getDownloadURL(r);
@@ -1505,6 +1642,7 @@ function renderDetail(){
     <div class="dsec"><div class="lab">Tema de pesquisa</div><p>${esc(m.tema)||'<span style="color:var(--ink-3)">sem descrição</span>'}</p></div>
     <div class="dsec"><div class="lab">Linhas de pesquisa</div><div class="chips">${m.linhas.map(l=>`<span class="chip linha" style="border-color:${linhaColor(l)}55" onclick="filterLinha('${esc(l)}')">${esc(l)}</span>`).join('')||'<span style="color:var(--ink-3)">nenhuma</span>'}</div></div>
     ${m.plataforma?`<div class="dsec"><div class="lab">Plataforma</div><a class="platlink" href="${esc(m.plataforma)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>Abrir plataforma<span class="u">${esc(m.plataforma.replace('https://',''))}</span></a></div>`:''}
+    ${m.driveLink?`<div class="dsec"><div class="lab">Dados no Drive</div><a class="platlink" href="${esc(m.driveLink)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 3 4 7H4z"/><path d="m16 3-4 7h8z"/><path d="M4 10h16l-4 11H8z"/></svg>Abrir no Drive</a></div>`:''}
     ${(m.resultados&&m.resultados.length)?`<div class="dsec"><div class="lab">Resultados e produtos</div>${m.resultados.map(r=>`<a class="reslink" href="${esc(r.url)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${esc(r.titulo||r.url)}</a>`).join('')}</div>`:''}
     ${prazos.length?`<div class="dsec"><div class="lab">Prazos e entregas</div>${prazos.map(p=>{const di=dateInfo(p.data);const cls=p.feito?'done':di?(di.over?'over':di.soon?'soon':''):'';return `<div class="prazo ${cls}"><span>${esc(p.titulo)}</span><span class="d">${di?di.label:''}</span></div>`}).join('')}</div>`:''}
     ${m.notas?`<div class="dsec"><div class="lab">Notas</div><p>${esc(m.notas)}</p></div>`:''}
@@ -1533,7 +1671,7 @@ function openMember(id){
   $('#mNome').value=m?m.nome:''; $('#mNivel').value=m?m.nivel:'doutorado';
   $('#mPrograma').value=m?m.programa:''; $('#mStatus').value=m?m.status:'ativo';
   $('#mOrigem').value=m?m.origem||'':''; $('#mTelefone').value=m?m.telefone||'':'';
-  $('#mTema').value=m?m.tema:''; $('#mPlataforma').value=m?m.plataforma||'':'';
+  $('#mTema').value=m?m.tema:''; $('#mPlataforma').value=m?m.plataforma||'':''; $('#mDrive').value=m?m.driveLink||'':'';
   $('#mNotas').value=m?m.notas||'':'';
   const lockField=(el,locked)=>{el.disabled=locked};
   // não-admin editando o próprio: pode mexer em foto, tema, plataforma, resultados, prazos, notas — não em nível/programa/status
@@ -1619,7 +1757,7 @@ async function saveMember(){
   const data={
     nome, nivel:$('#mNivel').value, programa:$('#mPrograma').value.trim(), status:$('#mStatus').value,
     origem:$('#mOrigem').value.trim(), telefone:$('#mTelefone').value.trim(),
-    tema:$('#mTema').value.trim(), plataforma:$('#mPlataforma').value.trim(), notas:$('#mNotas').value.trim(),
+    tema:$('#mTema').value.trim(), plataforma:$('#mPlataforma').value.trim(), driveLink:$('#mDrive').value.trim(), notas:$('#mNotas').value.trim(),
     linhas:[...formLinhas], resultados:formResultados.filter(r=>r.titulo||r.url), prazos:formPrazos.filter(p=>p.titulo), foto:fotoUrl,
     hub:$('#mHub').checked, hubMotivo:$('#mHubMotivo').value.trim(),
     vinculos:formVinculos.filter(v=>v.id)
@@ -1802,19 +1940,28 @@ function markChatSeen(){
 }
 function renderMural(){
   const wrap=$('#muralMsgs');
-  if(!state.chat.length){ wrap.innerHTML='<div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div>'; return; }
+  const onlyMine = $('#mOnlyMine') && $('#mOnlyMine').checked;
+  let list=state.chat;
+  if(onlyMine){
+    if(!myId && !myName){ toast('Identifique-se primeiro para filtrar "só pra mim".'); $('#mOnlyMine').checked=false; }
+    else list=list.filter(c=>!c.para || c.para===myId);
+  }
+  if(!list.length){ wrap.innerHTML=`<div class="mural-empty">${onlyMine?'Nenhum recado para você ainda.':'Nenhuma mensagem ainda. Comece a conversa do grupo.'}</div>`; return; }
   let html=''; let lastDay=null;
-  state.chat.forEach(c=>{
+  list.forEach(c=>{
     const ms = c.ts?.toMillis?c.ts.toMillis():+new Date(c.ts||Date.now());
     const dl=dayLabel(ms);
     if(dl!==lastDay){ html+=`<div class="day-sep">${dl}</div>`; lastDay=dl; }
     const mine = (myId && c.authorId===myId) || (!myId && myName && c.author===myName);
     const canDel = isAdmin || mine;
     const av = c.authorFoto ? `<img src="${esc(c.authorFoto)}" alt="">` : initials(c.author);
+    const targeted = c.para ? memberById(c.para) : null;
+    const forMe = c.para && c.para===myId;
     html+=`<div class="msg ${mine?'mine':''}">
       <div class="mav" style="background:${c.authorColor||'var(--ink-3)'}">${av}</div>
       <div class="msg-b">
         <div class="msg-head"><span class="nm">${esc(c.author)}</span><span class="tm">${fmtTime(ms)}</span></div>
+        ${c.para?`<div class="recado-tag${forMe?' forme':''}">Para: ${esc(targeted?targeted.nome:(c.paraNome||'alguém que saiu do grupo'))}</div>`:''}
         <div class="msg-txt">${esc(c.text)}</div>
       </div>
       ${canDel?`<button class="del" onclick="deleteChatMsg('${c.id}')" title="Apagar">×</button>`:''}
@@ -1910,6 +2057,118 @@ async function savePhoto(){
   }catch(e){ console.error(e); toast('Erro ao enviar a foto.'); }
 }
 
+/* ============ PUBLICAÇÕES ============ */
+function refreshPubFilters(){
+  const cc=$('#pubCategoria'), curC=cc.value;
+  cc.innerHTML='<option value="">Todas as categorias</option>'+
+    Object.entries(CATEGORIAS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  cc.value=curC;
+  const cp=$('#pubPessoa'), curP=cp.value;
+  const ordered=[...state.members].sort((a,b)=>a.nome.localeCompare(b.nome));
+  cp.innerHTML='<option value="">Todas as pessoas</option>'+
+    ordered.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('');
+  cp.value=curP;
+}
+function renderPubs(){
+  refreshPubFilters();
+  const wrap=$('#pubList');
+  const cat=$('#pubCategoria').value, pessoa=$('#pubPessoa').value, mine=$('#pubMine').checked;
+  let list=state.publicacoes;
+  if(cat) list=list.filter(p=>p.categoria===cat);
+  if(pessoa) list=list.filter(p=>p.memberId===pessoa);
+  if(mine){
+    if(!myId){ toast('Identifique-se primeiro para ver só as suas.'); $('#pubMine').checked=false; }
+    else list=list.filter(p=>p.memberId===myId);
+  }
+  if(!list.length){ wrap.innerHTML='<div class="crono-empty">Nenhuma publicação encontrada com esses filtros.</div>'; return; }
+  wrap.innerHTML=list.map(p=>{
+    const cfg=CATEGORIAS[p.categoria]||CATEGORIAS.outro;
+    const catLabel = p.categoria==='outro' && p.categoriaOutro ? p.categoriaOutro : cfg.label;
+    const m=memberById(p.memberId);
+    const canDel = isAdmin || canEditMember(p.memberId);
+    const dt = p.ts?.toMillis?new Date(p.ts.toMillis()):null;
+    const dateLabel = dt ? dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : '';
+    const abrirLabel = p.tipo==='arquivo' ? 'Baixar arquivo' : 'Abrir link';
+    return `<div class="pub-row">
+      <div class="pub-cat" style="background:${cfg.color}"></div>
+      <div class="pub-body">
+        <div class="pub-t">${esc(p.titulo)}</div>
+        <div class="pub-meta">
+          <span class="pub-cat-tag" style="background:${cfg.color}">${esc(catLabel)}</span>
+          <span class="pub-author"><span class="d" style="background:${m?NIVEIS[m.nivel]?.color:'var(--ink-3)'}"></span>${esc(p.memberNome||(m?m.nome:'—'))}</span>
+          ${dateLabel?`<span class="pub-date">${dateLabel}</span>`:''}
+        </div>
+      </div>
+      <div class="pub-act">
+        <a class="btn ghost" href="${esc(p.url)}" target="_blank" rel="noopener" title="${abrirLabel}" style="padding:6px 9px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px">${p.tipo==='arquivo'?'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>':'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/>'}</svg>
+        </a>
+        ${canDel?`<button class="mini-x" onclick="deletePublicacao('${p.id}')" title="Excluir">×</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+let pubTipo='link', pubFileData='', pubFileName='';
+function openPubModal(){
+  if(!myId && !isAdmin){ toast('Identifique-se primeiro para adicionar uma publicação.'); openIdentity(); return; }
+  const sel=$('#pubAutor');
+  if(isAdmin){
+    $('#pubAutorRow').style.display='block';
+    const ordered=[...state.members].sort((a,b)=>a.nome.localeCompare(b.nome));
+    sel.innerHTML=ordered.map(m=>`<option value="${m.id}" ${m.id===myId?'selected':''}>${esc(m.nome)}</option>`).join('');
+  }else{
+    $('#pubAutorRow').style.display='none';
+    sel.innerHTML=`<option value="${myId}">${esc(memberById(myId).nome)}</option>`;
+  }
+  $('#pubCategoriaSel').value='artigo'; $('#pubOutroRow').style.display='none'; $('#pubOutroTxt').value='';
+  $('#pubTitulo').value=''; $('#pubUrl').value='';
+  pubTipo='link'; pubFileData=''; pubFileName='';
+  $$('input[name="pubTipo"]').forEach(r=>r.checked=r.value==='link');
+  $('#pubUrl').style.display='block'; $('#pubFileArea').style.display='none';
+  $('#pubFileName').textContent='Nenhum arquivo escolhido. Máximo 15 MB.';
+  openOverlay('pubOverlay');
+}
+function handlePubFile(file){
+  if(!file)return;
+  if(file.size > 15*1024*1024){ toast('Arquivo maior que 15 MB. Escolha um arquivo menor.'); return; }
+  const reader=new FileReader();
+  reader.onload=e=>{ pubFileData=e.target.result; pubFileName=file.name; $('#pubFileName').textContent=file.name; };
+  reader.readAsDataURL(file);
+}
+async function savePublicacao(){
+  const autorId = isAdmin? $('#pubAutor').value : myId;
+  const categoria=$('#pubCategoriaSel').value;
+  const categoriaOutro=$('#pubOutroTxt').value.trim();
+  const titulo=$('#pubTitulo').value.trim();
+  if(!autorId){toast('Selecione o autor.');return}
+  if(!titulo){toast('Escreva o título.');return}
+  if(categoria==='outro' && !categoriaOutro){toast('Especifique a categoria.');return}
+
+  let url='', tipoFinal=pubTipo;
+  try{
+    if(pubTipo==='arquivo'){
+      if(!pubFileData){toast('Escolha um arquivo.');return}
+      toast('Enviando arquivo…');
+      const {url:u}=await fbUploadFile('pub_'+autorId,pubFileData,pubFileName);
+      url=u;
+    }else{
+      url=$('#pubUrl').value.trim();
+      if(!url){toast('Cole o link.');return}
+    }
+    const m=memberById(autorId);
+    await FB().addDoc(FB().collection(window.db,'rede_publicacoes'),{
+      memberId:autorId, memberNome: m?m.nome:'', categoria, categoriaOutro, titulo, tipo:tipoFinal, url,
+      ts: FB().serverTimestamp()
+    });
+    closeOverlay('pubOverlay'); toast('Publicação adicionada.');
+  }catch(e){ console.error(e); toast('Erro ao salvar a publicação.'); }
+}
+async function deletePublicacao(id){
+  if(!confirm('Excluir esta publicação?'))return;
+  try{ await FB().deleteDoc(FB().doc(window.db,'rede_publicacoes',id)); toast('Publicação removida.'); }
+  catch(e){ console.error(e); toast('Erro ao excluir.'); }
+}
+
 /* ============ ADMIN / PIN ============ */
 function openPin(){
   $('#pinInput').value='';
@@ -1947,7 +2206,7 @@ function logoutAdmin(){
 /* ============ RECADO (WhatsApp) ============ */
 function openRecado(){
   const sel=$('#rDest');
-  sel.innerHTML='<option value="all">Grupo todo (filtro atual)</option>'+
+  sel.innerHTML='<option value="all">Todo o grupo</option>'+
     state.members.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('');
   $('#rGroup').value=state.settings.groupLink||'';
   $('#rMsg').value=''; updateRecadoPrev();
@@ -1957,9 +2216,25 @@ function recadoTo(id){openRecado(); $('#rDest').value=id; updateRecadoPrev()}
 function updateRecadoPrev(){
   const dest=$('#rDest').value, msg=$('#rMsg').value.trim();
   let head='';
-  if(dest==='all'){ const vis=visibleMembers(); head=`Para: ${vis.length} membros`; }
+  if(dest==='all'){ head='Para: todo o grupo'; }
   else { const m=state.members.find(x=>x.id===dest); head=`Para: ${m?m.nome:''}`; }
   $('#rPrev').textContent=`${head}\n\n${msg||'(escreva a mensagem acima)'}`;
+}
+async function sendRecado(){
+  const dest=$('#rDest').value, msg=$('#rMsg').value.trim();
+  if(!msg){toast('Escreva a mensagem.');return}
+  const me = myId? memberById(myId): null;
+  const author = me? me.nome : (myName||'visitante');
+  const authorColor = me? (NIVEIS[me.nivel]?.color||'var(--ink-3)') : 'var(--ink-3)';
+  const para = dest==='all' ? null : dest;
+  try{
+    await fbAddChat({
+      text: msg, author, authorId: myId||null, authorFoto: me?me.foto||'':'', authorColor,
+      para, paraNome: para? (memberById(para)?.nome||'') : '', ts: FB().serverTimestamp()
+    });
+    closeOverlay('recadoOverlay');
+    toast(para?'Recado publicado para '+(memberById(para)?.nome||'')+'.':'Recado publicado para o grupo.');
+  }catch(e){ console.error(e); toast('Erro ao publicar. Verifique a conexão.'); }
 }
 function copyRecado(){
   navigator.clipboard.writeText($('#rPrev').textContent).then(()=>toast('Recado copiado. Cole no WhatsApp.'));
@@ -1990,12 +2265,13 @@ function switchView(v){
   document.body.dataset.view=v;
   $$('.view').forEach(el=>el.classList.remove('on'));
   $$('.tab').forEach(el=>el.classList.toggle('on',el.dataset.view===v));
-  ({rede:'viewRede',crono:'viewCrono',mural:'viewMural',fotos:'viewFotos'})[v] &&
-    $('#'+({rede:'viewRede',crono:'viewCrono',mural:'viewMural',fotos:'viewFotos'})[v]).classList.add('on');
+  const map={rede:'viewRede',crono:'viewCrono',mural:'viewMural',fotos:'viewFotos',pubs:'viewPubs'};
+  map[v] && $('#'+map[v]).classList.add('on');
   if(v==='rede') renderAll();
   if(v==='crono') renderCrono();
   if(v==='mural'){ renderMural(); markChatSeen(); }
   if(v==='fotos') renderFotos();
+  if(v==='pubs') renderPubs();
   $('#side').classList.remove('open');
 }
 
@@ -2050,6 +2326,7 @@ $('#tLabels').onchange=renderGraph;
 $('#tHubLinks').onchange=()=>{renderGraph(); if(selectedId) renderDetail();};
 $('#fitBtn').onclick=fitView;
 $('#rDest').onchange=updateRecadoPrev; $('#rMsg').oninput=updateRecadoPrev;
+$('#rSend').onclick=sendRecado;
 $('#rCopy').onclick=copyRecado; $('#rOpen').onclick=openWhats;
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 
@@ -2063,6 +2340,8 @@ $('#cMeus').onchange=renderCrono; $('#cFeitos').onchange=renderCrono;
 $('#chatInput').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(120,e.target.scrollHeight)+'px'});
 $('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
 $('#sendBtn').onclick=sendChat;
+$('#mOnlyMine').onchange=renderMural;
+$('#muralRecadoBtn').onclick=openRecado;
 
 $('#addPhotoBtn').onclick=openPhotoModal;
 $('#gPickBtn').onclick=()=>$('#gFile').click();
@@ -2071,6 +2350,18 @@ $('#savePhotoBtn').onclick=savePhoto;
 $('#lbClose').onclick=closeLightbox;
 $('#lbDel').onclick=deleteLightboxPhoto;
 $('#lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox()});
+
+$('#addPubBtn').onclick=openPubModal;
+$('#pubCategoria').onchange=renderPubs; $('#pubPessoa').onchange=renderPubs; $('#pubMine').onchange=renderPubs;
+$('#pubCategoriaSel').onchange=e=>{$('#pubOutroRow').style.display=e.target.value==='outro'?'block':'none'};
+$$('input[name="pubTipo"]').forEach(r=>r.onchange=e=>{
+  pubTipo=e.target.value;
+  $('#pubUrl').style.display=pubTipo==='link'?'block':'none';
+  $('#pubFileArea').style.display=pubTipo==='arquivo'?'block':'none';
+});
+$('#pubFilePick').onclick=()=>$('#pubFile').click();
+$('#pubFile').onchange=e=>handlePubFile(e.target.files[0]);
+$('#savePubBtn').onclick=savePublicacao;
 
 $$('[data-close]').forEach(b=>b.onclick=()=>closeOverlay(b.dataset.close));
 $$('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
@@ -2081,7 +2372,7 @@ window.addEventListener('resize',()=>{if(simulation){const[W,H]=graphSize();simu
 window.selectNode=selectNode; window.closeDetail=closeDetail; window.openMember=openMember;
 window.filterLinha=filterLinha; window.recadoTo=recadoTo;
 window.toggleCronoItem=toggleCronoItem; window.deleteCronoItem=deleteCronoItem;
-window.deleteChatMsg=deleteChatMsg;
+window.deleteChatMsg=deleteChatMsg; window.deletePublicacao=deletePublicacao;
 
 refreshIdentityUI();
 bootstrap();
