@@ -727,8 +727,9 @@
           <label class="toggle" style="padding:0;gap:8px"><input type="checkbox" id="mHub"> Conecta-se com o grupo inteiro (hub)</label>
         </div>
         <input id="mHubMotivo" placeholder="Por quê? Ex.: dá visibilidade a todos os programas" style="margin-top:8px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;width:100%;display:none">
-        <div id="vinculosList" style="margin-top:10px"></div>
-        <span class="add-mini" id="addVinculo">+ adicionar vínculo com uma pessoa</span>
+        <input id="vincSearch" placeholder="Buscar pessoa para conectar…" style="margin-top:10px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;width:100%">
+        <div class="linhas-pick" id="vincPick" style="margin-top:8px"></div>
+        <div id="vincMotivos" style="margin-top:8px"></div>
       </div>
       <div class="fg full"><label>Plataforma</label><input id="mPlataforma" placeholder="https://..."></div>
       <div class="fg full">
@@ -1433,27 +1434,40 @@ function renderLinhasMgmt(){
   state.linhas.forEach(l=>{
     const n=state.members.filter(m=>m.linhas.includes(l)).length;
     const row=document.createElement('div'); row.className='id-item'; row.style.cursor='default';
-    row.innerHTML=`<span class="av" style="background:${linhaColor(l)}"></span>
-      <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(l)}</span>
-      <span class="lv">${n} membro${n===1?'':'s'}</span>`;
-    const renameBtn=document.createElement('button'); renameBtn.className='btn ghost'; renameBtn.style.padding='6px 8px';
-    renameBtn.textContent='renomear'; renameBtn.onclick=()=>renameLinha(l);
-    const delBtn=document.createElement('button'); delBtn.className='icon-x'; delBtn.textContent='×';
+    const sw=document.createElement('span'); sw.className='av'; sw.style.background=linhaColor(l);
+    const nameSpan=document.createElement('span'); nameSpan.textContent=l; nameSpan.title='Clique para renomear';
+    nameSpan.style.cssText='flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;cursor:text;border-bottom:1px dashed transparent';
+    nameSpan.onmouseenter=()=>nameSpan.style.borderBottomColor='var(--ink-3)';
+    nameSpan.onmouseleave=()=>nameSpan.style.borderBottomColor='transparent';
+    nameSpan.onclick=()=>startInlineRename(nameSpan,l);
+    const count=document.createElement('span'); count.className='lv'; count.textContent=`${n} membro${n===1?'':'s'}`;
+    const delBtn=document.createElement('button'); delBtn.type='button'; delBtn.className='icon-x'; delBtn.textContent='×';
     delBtn.onclick=()=>deleteLinha(l);
-    row.append(renameBtn,delBtn);
+    row.append(sw,nameSpan,count,delBtn);
     el.appendChild(row);
   });
   if(!state.linhas.length) el.innerHTML='<p class="hint">Nenhuma linha cadastrada ainda.</p>';
 }
-async function persistLinhas(){
-  state.settings.linhas=state.linhas;
-  hiddenLinhas.clear();
-  try{ await fbSaveSettings(); }catch(e){ console.error(e); toast('Erro ao salvar. Verifique a conexão.'); }
+function startInlineRename(span,oldName){
+  const input=document.createElement('input');
+  input.value=oldName;
+  input.style.cssText='flex:1;min-width:0;border:1px solid var(--petrol);border-radius:7px;padding:4px 7px;font-size:13.5px;font-weight:600;color:var(--ink);outline:0';
+  span.replaceWith(input); input.focus(); input.select();
+  let settled=false;
+  const commit=()=>{
+    if(settled)return; settled=true;
+    const novo=input.value.trim();
+    if(!novo || novo===oldName){ renderLinhasMgmt(); return; }
+    commitRenameLinha(oldName,novo);
+  };
+  input.onblur=commit;
+  input.onkeydown=e=>{
+    if(e.key==='Enter'){ e.preventDefault(); input.blur(); }
+    else if(e.key==='Escape'){ settled=true; renderLinhasMgmt(); }
+  };
 }
-async function renameLinha(oldName){
-  const novo=(prompt('Renomear "'+oldName+'" para:',oldName)||'').trim();
-  if(!novo || novo===oldName) return;
-  if(state.linhas.some(l=>l===novo)){ toast('Já existe uma linha com esse nome.'); return; }
+async function commitRenameLinha(oldName,novo){
+  if(state.linhas.some(l=>l===novo)){ toast('Já existe uma linha com esse nome.'); renderLinhasMgmt(); return; }
   state.linhas=state.linhas.map(l=>l===oldName?novo:l);
   const afetados=state.members.filter(m=>m.linhas.includes(oldName));
   try{
@@ -1465,6 +1479,11 @@ async function renameLinha(oldName){
     renderLinhasMgmt();
     toast('Linha renomeada em '+afetados.length+' cadastro(s).');
   }catch(e){ console.error(e); toast('Erro ao renomear.'); }
+}
+async function persistLinhas(){
+  state.settings.linhas=state.linhas;
+  hiddenLinhas.clear();
+  try{ await fbSaveSettings(); }catch(e){ console.error(e); toast('Erro ao salvar. Verifique a conexão.'); }
 }
 async function deleteLinha(nome){
   const afetados=state.members.filter(m=>m.linhas.includes(nome));
@@ -1687,6 +1706,7 @@ function openMember(id){
   $('#mHub').checked=formHub;
   $('#mHubMotivo').style.display=formHub?'block':'none';
   $('#mHubMotivo').value=formHubMotivo;
+  $('#vincSearch').value='';
   renderLinhasPick(); renderRepList(); renderPrazoList(); renderPhotoPrev(); renderVinculosPick();
   openOverlay('memberOverlay');
 }
@@ -1719,20 +1739,42 @@ function renderPrazoList(){
   el.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{formPrazos.splice(+e.target.dataset.del,1);renderPrazoList()});
 }
 function renderVinculosPick(){
-  const el=$('#vinculosList'); el.innerHTML='';
-  const options=state.members.filter(o=>o.id!==editingId);
-  formVinculos.forEach((v,i)=>{
-    const row=document.createElement('div'); row.className='vinc-row';
-    const sel=document.createElement('select'); sel.dataset.i=i;
-    sel.innerHTML='<option value="">Selecione a pessoa</option>'+
-      options.map(o=>`<option value="${o.id}" ${o.id===v.id?'selected':''}>${esc(o.nome)}</option>`).join('');
-    const inp=document.createElement('input'); inp.placeholder='Motivo (opcional)'; inp.value=v.motivo||''; inp.dataset.i=i;
-    const del=document.createElement('button'); del.type='button'; del.className='icon-x'; del.textContent='×'; del.dataset.del=i;
-    row.append(sel,inp,del); el.appendChild(row);
+  renderVincPick();
+  renderVincMotivos();
+}
+function renderVincPick(){
+  const term=($('#vincSearch').value||'').trim().toLowerCase();
+  const el=$('#vincPick'); el.innerHTML='';
+  const options=state.members
+    .filter(o=>o.id!==editingId && (!term || o.nome.toLowerCase().includes(term)))
+    .sort((a,b)=>a.nome.localeCompare(b.nome));
+  if(!options.length){ el.innerHTML='<span class="hint">Ninguém encontrado.</span>'; return; }
+  options.forEach(o=>{
+    const on=formVinculos.some(v=>v.id===o.id);
+    const b=document.createElement('button'); b.type='button'; b.className='lp'+(on?' on':''); b.textContent=o.nome;
+    b.onclick=()=>{
+      formVinculos = formVinculos.some(v=>v.id===o.id)
+        ? formVinculos.filter(v=>v.id!==o.id)
+        : [...formVinculos,{id:o.id,motivo:''}];
+      renderVinculosPick();
+    };
+    el.appendChild(b);
   });
-  el.querySelectorAll('select').forEach(s=>s.onchange=e=>{formVinculos[+e.target.dataset.i].id=e.target.value});
-  el.querySelectorAll('input').forEach(i=>i.oninput=e=>{formVinculos[+e.target.dataset.i].motivo=e.target.value});
-  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{formVinculos.splice(+e.target.dataset.del,1);renderVinculosPick()});
+}
+function renderVincMotivos(){
+  const el=$('#vincMotivos'); el.innerHTML='';
+  if(!formVinculos.length) return;
+  formVinculos.forEach((v,i)=>{
+    const m=memberById(v.id);
+    const row=document.createElement('div'); row.className='vinc-row';
+    const nm=document.createElement('span'); nm.textContent=m?m.nome:'—';
+    nm.style.cssText='flex:0 0 38%;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)';
+    const inp=document.createElement('input'); inp.placeholder='Motivo (opcional)'; inp.value=v.motivo||''; inp.dataset.i=i;
+    const del=document.createElement('button'); del.type='button'; del.className='icon-x'; del.textContent='×'; del.dataset.i=i;
+    row.append(nm,inp,del); el.appendChild(row);
+  });
+  el.querySelectorAll('input').forEach(inp=>inp.oninput=e=>{formVinculos[+e.target.dataset.i].motivo=e.target.value});
+  el.querySelectorAll('button.icon-x').forEach(b=>b.onclick=e=>{formVinculos.splice(+e.target.dataset.i,1);renderVinculosPick()});
 }
 function renderPhotoPrev(){
   const el=$('#photoPrev');
@@ -2308,7 +2350,7 @@ $('#recadoBtn').onclick=openRecado;
 $('#saveMember').onclick=saveMember;
 $('#deleteMember').onclick=deleteMember;
 $('#mHub').onchange=e=>{$('#mHubMotivo').style.display=e.target.checked?'block':'none'};
-$('#addVinculo').onclick=()=>{formVinculos.push({id:'',motivo:''});renderVinculosPick()};
+$('#vincSearch').addEventListener('input',renderVincPick);
 $('#addRep').onclick=()=>{formResultados.push({titulo:'',url:''});renderRepList()};
 $('#addPrazo').onclick=()=>{formPrazos.push({titulo:'',data:'',feito:false});renderPrazoList()};
 $('#uploadBtn').onclick=()=>$('#fileInput').click();
