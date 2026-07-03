@@ -2300,7 +2300,9 @@ function checkPin(){
   const v=$('#pinInput').value.trim();
   if(v===(state.settings.pin||DEFAULT_PIN)){
     isAdmin=true; refreshIdentityUI(); renderAll(); if(currentView==='crono')renderCrono();
-    closeOverlay('pinOverlay'); toast('Modo coordenador ativado.');
+    toast('Modo coordenador ativado.');
+    $('#pinChangeArea').style.display='block';
+    $('#pinFooter').style.display='none';
   }else{
     toast('PIN incorreto.');
   }
