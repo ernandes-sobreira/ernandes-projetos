@@ -826,6 +826,7 @@
       <div id="pinChangeArea" style="display:none;margin-top:16px">
         <div class="fg"><label>Trocar PIN (opcional)</label><input id="newPin" placeholder="Novo PIN"></div>
         <button class="btn" id="savePinBtn" style="width:100%;justify-content:center">Salvar novo PIN</button>
+        <button class="btn danger" id="dedupeBtn" style="width:100%;justify-content:center;margin-top:8px">Remover membros duplicados</button>
         <button class="btn danger" id="logoutAdminBtn" style="width:100%;justify-content:center;margin-top:8px">Sair do modo coordenador</button>
       </div>
     </div>
@@ -1091,6 +1092,12 @@ const FB = () => window.fbFns;
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
 function uid(){return 'm'+Math.random().toString(36).slice(2,9)}
+function slugify(s){
+  return 'seed-'+(s||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/(^-|-$)/g,'');
+}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function initials(n){return (n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
 function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -1133,9 +1140,10 @@ async function bootstrap(){
     const memSnap = await f.getDocs(f.collection(window.db,'rede_members'));
     if(memSnap.empty){
       $('#loadingMsg').textContent='Preparando a rede pela primeira vez…';
-      // 1ª passada: gera ids de todos antes de gravar, para poder resolver vínculos por nome
+      // IDs determinísticos (derivados do nome), não aleatórios: se duas abas rodarem
+      // este seed ao mesmo tempo, escrevem no MESMO documento em vez de duplicar.
       const seedIds={};
-      SEED.forEach(s=>{seedIds[s.nome]=uid()});
+      SEED.forEach(s=>{seedIds[s.nome]=slugify(s.nome)});
       for(const s of SEED){
         const id=seedIds[s.nome];
         const hub=!!SEED_HUBS[s.nome];
@@ -1155,7 +1163,7 @@ async function bootstrap(){
       if(!existing.some(m=>m.nivel==='coord')){
         const s=SEED.find(x=>x.nivel==='coord');
         if(s){
-          const id=uid();
+          const id=slugify(s.nome);
           await f.setDoc(f.doc(window.db,'rede_members',id),
             {id,foto:'',telefone:'',resultados:[],prazos:[],notas:'',hub:false,hubMotivo:'',vinculos:[],
              createdAt:f.serverTimestamp(),...s});
@@ -2309,6 +2317,35 @@ function logoutAdmin(){
   closeOverlay('pinOverlay'); toast('Modo coordenador desativado.');
 }
 
+async function dedupeMembers(){
+  if(!isAdmin)return;
+  const groups={};
+  state.members.forEach(m=>{ (groups[m.nome]=groups[m.nome]||[]).push(m); });
+  const dupGroups=Object.values(groups).filter(g=>g.length>1);
+  if(!dupGroups.length){ toast('Nenhum nome duplicado encontrado.'); return; }
+
+  const score=m=>(m.notas||'').length + (m.resultados||[]).length + (m.prazos||[]).length
+    + (m.telefone?1:0) + (m.foto?1:0) + (m.linhas||[]).length + (m.vinculos||[]).length;
+  const toDelete=[];
+  dupGroups.forEach(g=>{
+    const sorted=g.slice().sort((a,b)=>{
+      const s=score(b)-score(a); if(s!==0) return s;
+      const ta=a.createdAt?.toMillis?a.createdAt.toMillis():0, tb=b.createdAt?.toMillis?b.createdAt.toMillis():0;
+      return ta-tb;
+    });
+    toDelete.push(...sorted.slice(1));
+  });
+
+  const nomes=[...new Set(dupGroups.map(g=>g[0].nome))].join(', ');
+  if(!confirm(`Encontrado(s) ${dupGroups.length} nome(s) duplicado(s): ${nomes}.\n\nIsso vai remover ${toDelete.length} cadastro(s) extra(s), mantendo o mais completo de cada. Não pode ser desfeito. Continuar?`))return;
+
+  try{
+    for(const m of toDelete){ await fbDeleteMember(m.id); }
+    closeOverlay('pinOverlay');
+    toast(toDelete.length+' cadastro(s) duplicado(s) removido(s).');
+  }catch(e){ console.error(e); toast('Erro ao remover duplicados. Tente novamente.'); }
+}
+
 /* ============ RECADO (WhatsApp) ============ */
 function openRecado(){
   const sel=$('#rDest');
@@ -2408,6 +2445,7 @@ $('#adminBtn').onclick=openPin;
 $('#pinOkBtn').onclick=checkPin;
 $('#pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPin()});
 $('#savePinBtn').onclick=saveNewPin;
+$('#dedupeBtn').onclick=dedupeMembers;
 $('#logoutAdminBtn').onclick=logoutAdmin;
 
 $('#addBtn').onclick=()=>openMember(null);
