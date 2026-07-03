@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rede de Pesquisa · LIPAN LEFA CELBE</title>
+<title>Carbonautas · LIPAN LEFA CELBE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -286,8 +286,34 @@
 
   /* ===== Mural ===== */
   .mural-flex{flex:1;min-height:0;display:flex;flex-direction:column;max-width:780px;width:100%;margin:0 auto;padding:0 18px}
-  .mural-toolbar{display:flex;align-items:center;gap:8px;padding:10px 4px 0;border-bottom:1px solid var(--line-2)}
-  .mural-msgs{flex:1;overflow-y:auto;padding:22px 4px 12px;display:flex;flex-direction:column;gap:2px}
+  .recados-panel{border-bottom:1px solid var(--line);flex:0 0 auto}
+  .recados-head{
+    width:100%;display:flex;align-items:center;gap:8px;padding:11px 4px;border:0;background:transparent;
+    font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;
+  }
+  .recados-body{max-height:280px;overflow-y:auto;padding:0 4px 12px;display:flex;flex-direction:column;gap:8px}
+  .recados-panel.collapsed .recados-body{display:none}
+  .recados-panel.collapsed #recadosChevron{transform:rotate(-90deg)}
+  .rc-card{border:1px solid var(--line);border-left:4px solid var(--ink-3);border-radius:12px;padding:11px 13px;background:var(--white)}
+  .rc-card.p-baixa{border-left-color:var(--cerrado)}
+  .rc-card.p-media{border-left-color:var(--amber)}
+  .rc-card.p-alta{border-left-color:var(--red);background:#fdf6f5}
+  .rc-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+  .rc-av{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:9.5px;font-weight:700;overflow:hidden;flex:0 0 auto}
+  .rc-av img{width:100%;height:100%;object-fit:cover}
+  .rc-name{font-size:12.5px;font-weight:700}
+  .rc-time{font-size:10.5px;color:var(--ink-3)}
+  .rc-to{
+    font-size:10.5px;font-weight:700;border-radius:20px;padding:2px 10px;color:#fff;margin-left:auto;white-space:nowrap;
+  }
+  .rc-to.all{background:var(--petrol)}
+  .rc-to.one{background:var(--coral)}
+  .rc-txt{font-size:13.5px;line-height:1.45;color:var(--ink);white-space:pre-wrap}
+  .rc-del{border:0;background:transparent;color:var(--ink-3);font-size:12px;cursor:pointer;float:right;margin-left:8px}
+  .rc-del:hover{color:var(--red)}
+  .recados-empty{color:var(--ink-3);font-size:12.5px;padding:6px 4px}
+  .count-badge{font-family:'Space Grotesk';font-weight:700;font-size:11px;color:var(--ink-3)}
+  .mural-msgs{flex:1;overflow-y:auto;padding:16px 4px 12px;display:flex;flex-direction:column;gap:2px}
   .msg{display:flex;gap:10px;padding:5px 4px;max-width:86%}
   .msg .mav{width:34px;height:34px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;overflow:hidden;background:var(--ink-3)}
   .msg .mav img{width:100%;height:100%;object-fit:cover}
@@ -306,8 +332,6 @@
   .msg:hover .del{opacity:1}
   .msg .del:hover{color:var(--red)}
   .day-sep{align-self:center;font-size:11px;font-weight:700;color:var(--ink-3);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin:14px 0 8px}
-  .recado-tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--coral);background:#fdf0f4;border:1px solid #f5cddb;border-radius:20px;padding:2px 9px;margin-bottom:4px}
-  .recado-tag.forme{color:#fff;background:var(--coral);border-color:var(--coral)}
   .composer{
     border-top:1px solid var(--line);padding:12px 4px 16px;display:flex;gap:9px;align-items:flex-end;background:var(--white);
   }
@@ -441,7 +465,7 @@
 <body data-view="rede">
 
 <div class="loading" id="loading">
-  <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><line x1="7.7" y1="7.2" x2="10.4" y2="15.2"/><line x1="16.4" y1="8.6" x2="13.4" y2="15.6"/><line x1="8" y1="6.3" x2="15.6" y2="6.8"/></svg></div>
+  <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><circle cx="5" cy="18" r="2"/><line x1="10.1" y1="10.2" x2="6.7" y2="7.7"/><line x1="13.9" y1="10.2" x2="17.3" y2="7.7"/><line x1="13.9" y1="13.8" x2="17.3" y2="16.3"/><line x1="10.1" y1="13.8" x2="6.7" y2="16.3"/></svg></div>
   <p id="loadingMsg">Conectando à rede…</p>
 </div>
 
@@ -454,10 +478,10 @@
     </button>
     <div class="brand">
       <div class="mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><line x1="7.7" y1="7.2" x2="10.4" y2="15.2"/><line x1="16.4" y1="8.6" x2="13.4" y2="15.6"/><line x1="8" y1="6.3" x2="15.6" y2="6.8"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><circle cx="5" cy="18" r="2"/><line x1="10.1" y1="10.2" x2="6.7" y2="7.7"/><line x1="13.9" y1="10.2" x2="17.3" y2="7.7"/><line x1="13.9" y1="13.8" x2="17.3" y2="16.3"/><line x1="10.1" y1="13.8" x2="6.7" y2="16.3"/></svg>
       </div>
       <div>
-        <h1>Rede de Pesquisa</h1>
+        <h1>Carbonautas</h1>
         <div class="sub">LIPAN · LEFA · CELBE</div>
       </div>
     </div>
@@ -599,13 +623,21 @@
   <!-- ============ VIEW: MURAL ============ -->
   <div class="view" id="viewMural">
     <div class="mural-flex">
-      <div class="mural-toolbar">
-        <label class="toggle" style="padding:6px 8px 6px 0"><input type="checkbox" id="mOnlyMine"> Só recados pra mim</label>
-        <div class="spacer"></div>
-        <button class="btn" id="muralRecadoBtn" style="padding:6px 11px">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
-          Recado direcionado
-        </button>
+      <div class="recados-panel">
+        <div class="recados-head" id="recadosToggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+          Recados <span class="count-badge" id="recadosCount"></span>
+          <div class="spacer"></div>
+          <label class="toggle" style="padding:0 4px" onclick="event.stopPropagation()"><input type="checkbox" id="mOnlyMine"> só pra mim</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="recadosChevron" style="width:15px;height:15px;transition:.2s"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="recados-body" id="recadosBody">
+          <div id="recadosList"></div>
+          <button class="btn primary" id="muralRecadoBtn" style="width:100%;justify-content:center;margin-top:4px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Novo recado
+          </button>
+        </div>
       </div>
       <div class="mural-msgs" id="muralMsgs"><div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div></div>
       <div class="composer">
@@ -915,6 +947,13 @@
       <div class="fg"><label>Destinatário</label>
         <select id="rDest"><option value="all">Todo o grupo</option></select>
       </div>
+      <div class="fg"><label>Prioridade</label>
+        <select id="rPrioridade">
+          <option value="baixa">Baixa</option>
+          <option value="media" selected>Média</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
       <div class="fg"><label>Mensagem</label><textarea id="rMsg" placeholder="Escreva o recado" style="min-height:90px"></textarea></div>
       <div class="fg"><label>Pré-visualização</label><div class="recado-prev" id="rPrev"></div></div>
       <details style="margin-top:4px">
@@ -1187,7 +1226,7 @@ function subscribeAll(){
   // CHAT
   f.onSnapshot(f.query(f.collection(window.db,'rede_chat'),f.orderBy('ts','asc')),snap=>{
     state.chat=snap.docs.map(d=>({...d.data(),id:d.id}));
-    if(currentView==='mural'){ renderMural(); markChatSeen(); }
+    if(currentView==='mural'){ renderMural(); renderRecados(); markChatSeen(); }
     else updateMuralBadge();
   });
   // SCHEDULE (eventos do grupo)
@@ -1980,15 +2019,11 @@ function markChatSeen(){
   localStorage.setItem('rede_lastSeenChat',lastSeenChat);
   $('#muralBadge').style.display='none';
 }
+function isRecado(c){ return c.tipo==='recado' || c.para!==undefined; }
 function renderMural(){
   const wrap=$('#muralMsgs');
-  const onlyMine = $('#mOnlyMine') && $('#mOnlyMine').checked;
-  let list=state.chat;
-  if(onlyMine){
-    if(!myId && !myName){ toast('Identifique-se primeiro para filtrar "só pra mim".'); $('#mOnlyMine').checked=false; }
-    else list=list.filter(c=>!c.para || c.para===myId);
-  }
-  if(!list.length){ wrap.innerHTML=`<div class="mural-empty">${onlyMine?'Nenhum recado para você ainda.':'Nenhuma mensagem ainda. Comece a conversa do grupo.'}</div>`; return; }
+  const list=state.chat.filter(c=>!isRecado(c));
+  if(!list.length){ wrap.innerHTML='<div class="mural-empty">Nenhuma mensagem ainda. Comece a conversa do grupo.</div>'; return; }
   let html=''; let lastDay=null;
   list.forEach(c=>{
     const ms = c.ts?.toMillis?c.ts.toMillis():+new Date(c.ts||Date.now());
@@ -1997,13 +2032,10 @@ function renderMural(){
     const mine = (myId && c.authorId===myId) || (!myId && myName && c.author===myName);
     const canDel = isAdmin || mine;
     const av = c.authorFoto ? `<img src="${esc(c.authorFoto)}" alt="">` : initials(c.author);
-    const targeted = c.para ? memberById(c.para) : null;
-    const forMe = c.para && c.para===myId;
     html+=`<div class="msg ${mine?'mine':''}">
       <div class="mav" style="background:${c.authorColor||'var(--ink-3)'}">${av}</div>
       <div class="msg-b">
         <div class="msg-head"><span class="nm">${esc(c.author)}</span><span class="tm">${fmtTime(ms)}</span></div>
-        ${c.para?`<div class="recado-tag${forMe?' forme':''}">Para: ${esc(targeted?targeted.nome:(c.paraNome||'alguém que saiu do grupo'))}</div>`:''}
         <div class="msg-txt">${esc(c.text)}</div>
       </div>
       ${canDel?`<button class="del" onclick="deleteChatMsg('${c.id}')" title="Apagar">×</button>`:''}
@@ -2011,6 +2043,38 @@ function renderMural(){
   });
   wrap.innerHTML=html;
   wrap.scrollTop=wrap.scrollHeight;
+}
+function renderRecados(){
+  const wrap=$('#recadosList');
+  const onlyMine = $('#mOnlyMine') && $('#mOnlyMine').checked;
+  let list=state.chat.filter(isRecado).sort((a,b)=>{
+    const ta=a.ts?.toMillis?a.ts.toMillis():0, tb=b.ts?.toMillis?b.ts.toMillis():0;
+    return tb-ta;
+  });
+  if(onlyMine){
+    if(!myId){ toast('Identifique-se primeiro para filtrar "só pra mim".'); $('#mOnlyMine').checked=false; }
+    else list=list.filter(c=>!c.para || c.para===myId);
+  }
+  $('#recadosCount').textContent=list.length||'';
+  if(!list.length){ wrap.innerHTML='<div class="recados-empty">Nenhum recado ainda.</div>'; return; }
+  wrap.innerHTML=list.map(c=>{
+    const ms = c.ts?.toMillis?c.ts.toMillis():+new Date(c.ts||Date.now());
+    const mine = (myId && c.authorId===myId) || (!myId && myName && c.author===myName);
+    const canDel = isAdmin || mine;
+    const av = c.authorFoto ? `<img src="${esc(c.authorFoto)}" alt="">` : initials(c.author);
+    const targeted = c.para ? memberById(c.para) : null;
+    const toLabel = c.para ? esc(targeted?targeted.nome:(c.paraNome||'alguém que saiu do grupo')) : 'Todos';
+    const prio = c.prioridade || 'media';
+    return `<div class="rc-card p-${prio}">
+      <div class="rc-head">
+        <div class="rc-av" style="background:${c.authorColor||'var(--ink-3)'}">${av}</div>
+        <span class="rc-name">${esc(c.author)}</span>
+        <span class="rc-time">${fmtTime(ms)}</span>
+        <span class="rc-to ${c.para?'one':'all'}">Para: ${toLabel}</span>
+      </div>
+      <div class="rc-txt">${canDel?`<button class="rc-del" onclick="deleteChatMsg('${c.id}')" title="Apagar">×</button>`:''}${esc(c.text)}</div>
+    </div>`;
+  }).join('');
 }
 async function sendChat(){
   const ta=$('#chatInput'); const text=ta.value.trim();
@@ -2251,7 +2315,7 @@ function openRecado(){
   sel.innerHTML='<option value="all">Todo o grupo</option>'+
     state.members.map(m=>`<option value="${m.id}">${esc(m.nome)}</option>`).join('');
   $('#rGroup').value=state.settings.groupLink||'';
-  $('#rMsg').value=''; updateRecadoPrev();
+  $('#rMsg').value=''; $('#rPrioridade').value='media'; updateRecadoPrev();
   openOverlay('recadoOverlay');
 }
 function recadoTo(id){openRecado(); $('#rDest').value=id; updateRecadoPrev()}
@@ -2269,10 +2333,11 @@ async function sendRecado(){
   const author = me? me.nome : (myName||'visitante');
   const authorColor = me? (NIVEIS[me.nivel]?.color||'var(--ink-3)') : 'var(--ink-3)';
   const para = dest==='all' ? null : dest;
+  const prioridade = $('#rPrioridade').value;
   try{
     await fbAddChat({
-      text: msg, author, authorId: myId||null, authorFoto: me?me.foto||'':'', authorColor,
-      para, paraNome: para? (memberById(para)?.nome||'') : '', ts: FB().serverTimestamp()
+      tipo:'recado', text: msg, author, authorId: myId||null, authorFoto: me?me.foto||'':'', authorColor,
+      para, paraNome: para? (memberById(para)?.nome||'') : '', prioridade, ts: FB().serverTimestamp()
     });
     closeOverlay('recadoOverlay');
     toast(para?'Recado publicado para '+(memberById(para)?.nome||'')+'.':'Recado publicado para o grupo.');
@@ -2311,7 +2376,7 @@ function switchView(v){
   map[v] && $('#'+map[v]).classList.add('on');
   if(v==='rede') renderAll();
   if(v==='crono') renderCrono();
-  if(v==='mural'){ renderMural(); markChatSeen(); }
+  if(v==='mural'){ renderMural(); renderRecados(); markChatSeen(); }
   if(v==='fotos') renderFotos();
   if(v==='pubs') renderPubs();
   $('#side').classList.remove('open');
@@ -2382,8 +2447,9 @@ $('#cMeus').onchange=renderCrono; $('#cFeitos').onchange=renderCrono;
 $('#chatInput').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(120,e.target.scrollHeight)+'px'});
 $('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
 $('#sendBtn').onclick=sendChat;
-$('#mOnlyMine').onchange=renderMural;
+$('#mOnlyMine').onchange=renderRecados;
 $('#muralRecadoBtn').onclick=openRecado;
+$('#recadosToggle').onclick=()=>$('.recados-panel').classList.toggle('collapsed');
 
 $('#addPhotoBtn').onclick=openPhotoModal;
 $('#gPickBtn').onclick=()=>$('#gFile').click();
